@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Formulare JSON Schema",
+  "description": "Schema für interaktive Formulare im JSON-Format",
+  "type": "object",
+  "properties": {
+    "forms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/formular"
+      },
+      "minItems": 1,
+      "description": "Array von verfügbaren Formularen"
+    }
+  },
+  "required": ["forms"],
+  "additionalProperties": true,
+  "definitions": {
+    "formular": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Eindeutige Formular-ID"
+        },
+        "label": {
+          "type": "string",
+          "description": "Anzeigename des Formulars"
+        },
+        "titel": {
+          "type": "string",
+          "description": "Vollständiger Titel des Formulars"
+        },
+        "beschreibung": {
+          "type": "string",
+          "description": "Beschreibung und Zweck des Formulars"
+        },
+        "pages": {
+          "type": "object",
+          "description": "Seiten des Formulars, indiziert nach Seitennummer",
+          "patternProperties": {
+            "^[0-9]+$": {
+              "$ref": "#/definitions/seite"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["id", "label", "pages"],
+      "additionalProperties": true
+    },
+    "seite": {
+      "type": "object",
+      "properties": {
+        "typ": {
+          "type": "string",
+          "enum": ["textformular", "customformular", "bestaetigungsformular"],
+          "description": "Typ der Formulareseite"
+        },
+        "titel": {
+          "type": "string",
+          "description": "Titel der Seite"
+        },
+        "beschreibung": {
+          "type": "string",
+          "description": "Beschreibungstext für die Seite"
+        },
+        "zusammenfassung": {
+          "type": "string",
+          "enum": ["ja", "nein"],
+          "description": "Zusammenfassung der eingegebenen Daten anzeigen"
+        },
+        "einverständniserklärung": {
+          "type": "string",
+          "description": "Text der Einverständniserklärung (HTML erlaubt)"
+        },
+        "emailkopie": {
+          "type": "string",
+          "enum": ["ja", "nein"],
+          "description": "Option für E-Mail-Kopie an Nutzer"
+        },
+        "captcha": {
+          "type": "string",
+          "enum": ["ja", "nein"],
+          "description": "Captcha-Validierung aktivieren"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/feld"
+          },
+          "description": "Eingabefelder der Seite"
+        }
+      },
+      "required": ["typ"],
+      "additionalProperties": true
+    },
+    "feld": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "HTML name-Attribut des Feldes"
+        },
+        "label": {
+          "type": "string",
+          "description": "Anzeigetext/Label des Feldes"
+        },
+        "pflichtfeld": {
+          "type": "string",
+          "enum": ["ja", "nein"],
+          "description": "Pflichtfeld-Status"
+        },
+        "typ": {
+          "type": "string",
+          "enum": [
+            "text",
+            "zahl",
+            "email",
+            "ja/nein",
+            "auswahlliste",
+            "dropdown"
+          ],
+          "description": "Eingabefeld-Typ"
+        },
+        "länge": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximale Eingabelänge"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "string" },
+                  "label": { "type": "string" }
+                },
+                "required": ["value", "label"],
+                "additionalProperties": true
+              }
+            ]
+          },
+          "description": "Auswahloptionen für Dropdown und Multiselect"
+        }
+      },
+      "required": ["name", "label", "typ"],
+      "additionalProperties": true
+    }
+  }
+}

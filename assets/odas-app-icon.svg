@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.1-rc (832c77b156, 2025-02-28)"
+   sodipodi:docname="Formulare.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="1.5683594"
+     inkscape:cx="255.6812"
+     inkscape:cy="217.74346"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <!-- Hintergrund -->
+    <rect
+       width="512"
+       height="512"
+       fill="#4a90e2"
+       rx="50"
+       ry="50"
+       id="rect1"
+       x="0.63760906"
+       y="0.99501866" />
+    <!-- Formularfeld -->
+    <rect
+       x="80.637604"
+       y="80.995018"
+       width="352"
+       height="352"
+       fill="#ffffff"
+       rx="20"
+       ry="20"
+       id="rect2" />
+    <!-- Simulierte Textzeilen im Formular -->
+    <rect
+       x="120.63761"
+       y="140.99503"
+       width="240"
+       height="20"
+       fill="#4a90e2"
+       id="rect3" />
+    <rect
+       x="120.63761"
+       y="180.99503"
+       width="200"
+       height="20"
+       fill="#4a90e2"
+       id="rect4" />
+    <rect
+       x="120.63761"
+       y="220.99503"
+       width="280"
+       height="20"
+       fill="#4a90e2"
+       id="rect5" />
+    <!-- H\u00e4kchen -->
+    <path
+       d="m 160.63761,320.99502 40,40 80,-80"
+       stroke="#7ed321"
+       stroke-width="20"
+       fill="none"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       id="path5" />
+  </g>
+</svg>

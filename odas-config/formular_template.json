@@ -1,0 +1,47 @@
+{
+  "forms": [
+    {
+      "id": "briefwahl",
+      "label": "Briefwahl",
+      "titel": "Wahlschein / Briefwahlunterlagen beantragen",
+      "beschreibung": "Hier stellen Sie einen Antrag auf Wahlschein und Briefwahlunterlagen zur 21. Bundestagswahl am 23. Februar 2025.",
+      "pages": {
+        "1": {
+          "typ": "textformular",
+          "titel": "Beantragung Briefwahl für diese Person:",
+          "beschreibung": "Die Person muss in Esslingen am Neckar gemeldet sein.",
+          "fields": [
+            {
+              "name": "vorname",
+              "label": "Vorname",
+              "pflichtfeld": "ja",
+              "typ": "text",
+              "länge": 255
+            },
+            {
+              "name": "plz",
+              "label": "PLZ",
+              "pflichtfeld": "ja",
+              "typ": "zahl",
+              "länge": 5
+            },
+            {
+              "name": "email",
+              "label": "Email",
+              "pflichtfeld": "ja",
+              "typ": "email"
+            }
+          ]
+        },
+        "2": {
+          "typ": "bestaetigungsformular",
+          "titel": "Bestätigung der Daten",
+          "beschreibung": "Diese Daten wurden eingegeben und werden nach Absenden an die Stadt Esslingen übertragen.",
+          "einverständniserklärung": "Ich willige ein, meine Daten zum Zwecke der Briefwahlbeantragung zu eletronisch zu verarbeiten und haben die <a href=\"https://esslingen.de/datenschutz\">Datenschutzerklärung</a> zur Kenntnis genommen.",
+          "emailkopie": "ja",
+          "captcha": "nein"
+        }
+      }
+    }
+  ]
+}

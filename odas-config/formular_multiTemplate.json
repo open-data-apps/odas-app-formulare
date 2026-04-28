@@ -1,0 +1,192 @@
+{
+  "forms": [
+    {
+      "id": "briefwahl",
+      "label": "Briefwahl",
+      "titel": "Wahlschein / Briefwahlunterlagen beantragen",
+      "beschreibung": "Hier stellen Sie einen Antrag auf Wahlschein und Briefwahlunterlagen zur 21. Bundestagswahl am 23. Februar 2025.",
+      "pages": {
+        "1": {
+          "typ": "textformular",
+          "titel": "Beantragung Briefwahl für diese Person",
+          "beschreibung": "Die Person muss in Esslingen am Neckar gemeldet sein.",
+          "fields": [
+            {
+              "name": "vorname",
+              "label": "Vorname",
+              "pflichtfeld": "ja",
+              "typ": "text",
+              "länge": 255
+            },
+            {
+              "name": "plz",
+              "label": "PLZ",
+              "pflichtfeld": "ja",
+              "typ": "zahl",
+              "länge": 5
+            },
+            {
+              "name": "email",
+              "label": "Email",
+              "pflichtfeld": "ja",
+              "typ": "email"
+            }
+          ]
+        },
+        "2": {
+          "typ": "bestaetigungsformular",
+          "titel": "Bestätigung der Daten",
+          "beschreibung": "Diese Daten wurden eingegeben und werden nach Absenden an die Stadt Esslingen übertragen.",
+          "zusammenfassung": "ja",
+          "einverständniserklärung": "Ich willige ein, meine Daten zum Zwecke der Briefwahlbeantragung elektronisch zu verarbeiten und habe die <a href=\"https://esslingen.de/datenschutz\" target=\"_blank\">Datenschutzerklärung</a> zur Kenntnis genommen.",
+          "emailkopie": "ja",
+          "captcha": "nein"
+        }
+      }
+    },
+    {
+      "id": "2025-03-kreisverkehr-badstrasse",
+      "label": "Kreisverkehr Umfrage",
+      "titel": "Wir (Stadtverwaltung) überlegen ob ein Kreisverkehr die Ampelkreuzung ablösen soll. Wir bitten Sie hierzu um Ihre Meinung. Vielen Dank für Ihre Beteiligung",
+      "beschreibung": "Neuer Kreisverkehr an Badstrasse/Schlossstrasse?",
+      "pages": {
+        "1": {
+          "typ": "textformular",
+          "titel": "Umbaumaßnahme",
+          "beschreibung": "Hier können Sie zum Umfang der Maßnahme Ihre Meinung sagen.",
+          "fields": [
+            {
+              "name": "frage1",
+              "label": "Fühlen Sie sich durch die Ampelschaltung ungerecht behandelt?",
+              "pflichtfeld": "ja",
+              "typ": "text",
+              "länge": 255
+            },
+            {
+              "name": "frage2",
+              "label": "Wieviele Sekunden bleiben Sie geschätzt in der Kreuzung (Durchschnittlich)?",
+              "pflichtfeld": "ja",
+              "typ": "zahl",
+              "länge": 5
+            },
+            {
+              "name": "frage3",
+              "label": "Würden Sie einen Umbau von Ampelkreuzung auf Kreisverkehr befürworten?",
+              "pflichtfeld": "ja",
+              "typ": "text",
+              "länge": 20
+            }
+          ]
+        },
+        "2": {
+          "typ": "textformular",
+          "titel": "Bezug zur Kreuzung",
+          "beschreibung": "Wie sind Sie durch die Umbaumaßnahme möglicherweise betroffen?",
+          "fields": [
+            {
+              "name": "frage4",
+              "label": "Sind Sie Anwohner in der Gegend der Kreuzung?",
+              "pflichtfeld": "ja",
+              "typ": "text",
+              "länge": 20
+            },
+            {
+              "name": "frage5",
+              "label": "Wie oft fahren Sie durch die Kreuzung pro Woche?",
+              "pflichtfeld": "ja",
+              "typ": "zahl",
+              "länge": 5
+            },
+            {
+              "name": "frage6",
+              "label": "Ihr Verkehrsmittel (KFZ, Fahrrad, Fußgänger, Sontiges).",
+              "pflichtfeld": "ja",
+              "typ": "text",
+              "länge": 20
+            }
+          ]
+        },
+        "3": {
+          "typ": "bestaetigungsformular",
+          "titel": "Bestätigung der Daten",
+          "beschreibung": "Diese Daten wurden eingegeben und werden nach Absenden an die Stadt Esslingen übertragen.",
+          "zusammenfassung": "ja",
+          "einverständniserklärung": "Ich willige ein, meine Daten zum Zwecke der Briefwahlbeantragung elektronisch zu verarbeiten und habe die <a href=\"https://esslingen.de/datenschutz\" target=\"_blank\">Datenschutzerklärung</a> zur Kenntnis genommen.",
+          "emailkopie": "ja",
+          "captcha": "nein"
+        }
+      }
+    },
+    {
+      "id": "customform1",
+      "label": "Custom Formular Beispiel",
+      "titel": "Custom Formular",
+      "beschreibung": "Beispiel für ein benutzerdefiniertes Formular mit allen neuen Funktionen.",
+      "pages": {
+        "1": {
+          "typ": "customformular",
+          "titel": "Seite 1",
+          "beschreibung": "Bitte füllen Sie alle Felder aus.",
+          "fields": [
+            {
+              "name": "vorname",
+              "label": "Vorname",
+              "typ": "text",
+              "pflichtfeld": "ja",
+              "länge": "50"
+            },
+            {
+              "name": "alter",
+              "label": "Alter",
+              "typ": "zahl",
+              "pflichtfeld": "ja"
+            },
+            {
+              "name": "email",
+              "label": "E-Mail",
+              "typ": "email",
+              "pflichtfeld": "ja"
+            },
+            {
+              "name": "farbe",
+              "label": "Lieblingsfarbe",
+              "typ": "dropdown",
+              "pflichtfeld": "ja",
+              "options": [
+                { "label": "Rot" },
+                { "label": "Blau" },
+                { "label": "Grün" }
+              ]
+            },
+            {
+              "name": "newsletter",
+              "label": "Newsletter abonnieren",
+              "typ": "ja/nein",
+              "pflichtfeld": "ja"
+            },
+            {
+              "name": "interessen",
+              "label": "Interessen",
+              "typ": "auswahlliste",
+              "pflichtfeld": "ja",
+              "options": [
+                { "label": "Sport" },
+                { "label": "Musik" },
+                { "label": "Kunst" }
+              ]
+            }
+          ]
+        },
+        "2": {
+          "typ": "bestaetigungsformular",
+          "titel": "Bestätigung der Daten",
+          "beschreibung": "Diese Daten wurden eingegeben und werden nach Absenden an die Stadt Esslingen übertragen.",
+          "zusammenfassung": "ja",
+          "einverständniserklärung": "Ich willige ein, meine Daten zum Zwecke der Briefwahlbeantragung elektronisch zu verarbeiten und habe die <a href=\"https://esslingen.de/datenschutz\" target=\"_blank\">Datenschutzerklärung</a> zur Kenntnis genommen.",
+          "emailkopie": "ja",
+          "captcha": "nein"
+        }
+      }
+    }
+  ]
+}
