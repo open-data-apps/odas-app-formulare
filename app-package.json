@@ -19,9 +19,16 @@
     "Jedes Formular wird in einer Liste zur auswahl angezeigt.",
     "Der Link zur Datei muss ein direkter Link sein z.B.: https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json"
   ],
-  "tags-funktion": ["Bürgerinteraktion", "Verwaltungsprozess"],
-  "tags-dateityp": ["json"],
-  "tags-datenart": ["App-Spezifikation"],
+  "tags-funktion": [
+    "Bürgerinteraktion",
+    "Verwaltungsprozess"
+  ],
+  "tags-dateityp": [
+    "json"
+  ],
+  "tags-datenart": [
+    "App-Spezifikation"
+  ],
   "screenshots": [
     "/assets/Desktop_Screenshot.png",
     "/assets/Desktop_Screenshot_2.png",
@@ -159,7 +166,10 @@
       "format": {
         "typ": "markdown"
       },
-      "default": ["_multiline_", "Alle Daten sind geschützt."],
+      "default": [
+        "_multiline_",
+        "Alle Daten sind geschützt."
+      ],
       "erforderlich": "ja"
     },
     "urldaten": {
@@ -198,10 +208,29 @@
       "hilfe": "Angabe der App-Sprache",
       "format": {
         "typ": "dropdown",
-        "optionen": ["de"],
+        "optionen": [
+          "de"
+        ],
         "default": "de"
       },
       "erforderlich": "ja"
+    },
+    "urlDaten": {
+      "label": "URL zum Datensatz im ODP",
+      "hilfe": "Der Datensatz im Open Data Portal mit den Daten der Formular App",
+      "format": {
+        "typ": "url"
+      },
+      "default": "",
+      "beispiel": "",
+      "erforderlich": "ja"
     }
-  }
+  },
+  "daten": {
+    "beschreibung": "Die Formular-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
+    "schema": "",
+    "beispiel": "",
+    "beispiel-url": ""
+  },
+  "api-version": "1"
 }
