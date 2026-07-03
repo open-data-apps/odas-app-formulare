@@ -9,15 +9,19 @@
   "kurzbeschreibung": "Die App macht das Erstellen und Verwalten von Formularen kinderleicht. Ob Anträge, Umfragen oder Rückmeldungen – alles digital und unkompliziert.",
   "beschreibung": [
     "_multiline_",
-    "Die App zeigt eine Formularauswahl an mit ",
-    "den jeweils definierten Formularen. Die Daten werden aus einem Open ",
-    "Data Portal bezogen und müssen in Form von einer JSON-Datei vorliegen. ",
-    "Die Daten müssen in einem Open Data Portal ",
-    "wie folgt aufgebaut sein: ",
-    "* Datei: JSON Datei mit allen enthaltenen Formularen.",
-    "* Jedes Formular kann untereinander im JSON angelegt werden. ",
-    "Jedes Formular wird in einer Liste zur auswahl angezeigt.",
-    "Der Link zur Datei muss ein direkter Link sein z.B.: https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json"
+    "<p>Die Formular-App stellt digitale Formulare übersichtlich bereit und macht Rückmeldungen, Anträge oder einfache Eingaben leichter zugänglich.</p>",
+    "<p>Formularvorlagen können konfiguriert und in einer einheitlichen Oberfläche genutzt werden.</p>",
+    "<h3>Inhalte</h3>",
+    "<p>Die App verarbeitet Formular-Definitionen aus einer konfigurierten JSON-Quelle. Unterstützt werden unterschiedliche Feldtypen und Vorlagen für typische kommunale Formularprozesse.</p>",
+    "<h3>Nutzung</h3>",
+    "<p>Wählen Sie das gewünschte Formular aus, füllen Sie die angezeigten Felder aus und folgen Sie den in der App vorgesehenen Schritten. Welche Daten erhoben werden, hängt von der jeweiligen Formular-Konfiguration ab.</p>",
+    "<h3>Für wen ist diese App?</h3>",
+    "<p>Die App richtet sich an Bürger:innen, Verwaltungen und Organisationen, die einfache digitale Formulare bereitstellen möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+    "<h3>Datenquelle</h3>",
+    "<p>Die Formulare werden aus einer konfigurierten JSON-Ressource geladen.</p>",
+    "<ul><li><strong>Open Data Portal:</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li></ul>",
+    "<h3>Open Data App Store</h3>",
+    "<p>Diese App ist für den Open Data App Store vorbereitet und kann mit eigenen Formular-Definitionen betrieben werden.</p>"
   ],
   "tags-funktion": [
     "Bürgerinteraktion",
@@ -114,20 +118,19 @@
       },
       "default": [
         "_multiline_",
-        "Die Formular-App zeigt die jeweils definierten Formulare.",
-        "Diese besitzen Standardformate wie Textformular oder Bestätigungsformular.",
-        "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestand immer sofort zu aktualisieren.",
-        "## Für wen ist diese App?",
-        "Diese App ermöglicht das digitale Ausfüllen und Einreichen von Formularen. Sie richtet sich an Bürger:innen, die Behördengänge online erledigen möchten.",
-        "## App-Anbieter",
-        "Die App wird bereit gestellt von <a href=\"{{odp.anbieter.url}}\">{{odp.anbieter.name}}</a>",
-        "## Datenquelle",
-        "Die Daten kommen aus  unserem Open Data Portal <a href=\"{{odp.url}}\">{{odp.name}}</a>",
-        "Die Datenquelle ist in unserem Open Data Portal <a href=\"{{appinstanz.apiurl}}\">{{appinstanz.apiurl}}</a>.",
-        "## Über diese App",
-        "Die App wurde entwickelt von <a href=\"{{app.developer.url}}\">{{app.developer.name}}</a>. App-Version: {{app.version}}.",
-        "## Open Data App Store",
-        "Der Open Data App Store betrieben von <a href=\"{{odas.betreiber.url}}\">{{odas.betreiber.name}}</a>"
+        "<p>Die Formular-App stellt digitale Formulare übersichtlich bereit und macht Rückmeldungen, Anträge oder einfache Eingaben leichter zugänglich.</p>",
+        "<p>Formularvorlagen können konfiguriert und in einer einheitlichen Oberfläche genutzt werden.</p>",
+        "<h3>Inhalte</h3>",
+        "<p>Die App verarbeitet Formular-Definitionen aus einer konfigurierten JSON-Quelle. Unterstützt werden unterschiedliche Feldtypen und Vorlagen für typische kommunale Formularprozesse.</p>",
+        "<h3>Nutzung</h3>",
+        "<p>Wählen Sie das gewünschte Formular aus, füllen Sie die angezeigten Felder aus und folgen Sie den in der App vorgesehenen Schritten. Welche Daten erhoben werden, hängt von der jeweiligen Formular-Konfiguration ab.</p>",
+        "<h3>Für wen ist diese App?</h3>",
+        "<p>Die App richtet sich an Bürger:innen, Verwaltungen und Organisationen, die einfache digitale Formulare bereitstellen möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+        "<h3>Datenquelle</h3>",
+        "<p>Die Formulare werden aus einer konfigurierten JSON-Ressource geladen.</p>",
+        "<ul><li><strong>Open Data Portal:</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li></ul>",
+        "<h3>Open Data App Store</h3>",
+        "<p>Diese App ist für den Open Data App Store vorbereitet und kann mit eigenen Formular-Definitionen betrieben werden.</p>"
       ],
       "erforderlich": "ja"
     },
@@ -220,22 +223,29 @@
     "datenquelleHinweis": {
       "label": "Methodik / Datenquelle-Hinweis",
       "hilfe": "Herkunft, Erhebungsmethode, Limitierungen (Markdown/HTML). Leer = ausgeblendet.",
-      "format": { "typ": "markdown" },
-      "default": "",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<p>Die Formular-App lädt Formular-Definitionen aus der konfigurierten JSON-Ressource und erzeugt daraus Eingabemasken im Browser. Welche Felder angezeigt werden und welche Daten abgefragt werden, hängt vollständig von der Formular-Konfiguration der jeweiligen Instanz ab.</p>",
       "erforderlich": "nein"
     },
     "datenStand": {
       "label": "Datenstand",
       "hilfe": "Freitext-Datum, z.B. 'Stand: Januar 2025'. Leer = ausgeblendet.",
-      "format": { "typ": "string", "laenge": 60 },
-      "default": "",
+      "format": {
+        "typ": "string",
+        "laenge": 60
+      },
+      "default": "Stand: abhängig von der konfigurierten Formular-Ressource",
       "erforderlich": "nein"
     },
     "weiterfuehrendeLinks": {
       "label": "Weiterführende Links",
       "hilfe": "Verwandte Datensätze / Hintergrundquellen (Markdown/HTML). Leer = ausgeblendet.",
-      "format": { "typ": "markdown" },
-      "default": "",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>",
       "erforderlich": "nein"
     }
   },

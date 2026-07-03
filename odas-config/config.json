@@ -5,7 +5,21 @@
   "icon": "logo_ondics.png",
   "brandingCSS": "",
   "brandingCSSFile": "",
-  "beschreibung": "",
+  "beschreibung": [
+    "<p>Die Formular-App stellt digitale Formulare übersichtlich bereit und macht Rückmeldungen, Anträge oder einfache Eingaben leichter zugänglich.</p>",
+    "<p>Formularvorlagen können konfiguriert und in einer einheitlichen Oberfläche genutzt werden.</p>",
+    "<h3>Inhalte</h3>",
+    "<p>Die App verarbeitet Formular-Definitionen aus einer konfigurierten JSON-Quelle. Unterstützt werden unterschiedliche Feldtypen und Vorlagen für typische kommunale Formularprozesse.</p>",
+    "<h3>Nutzung</h3>",
+    "<p>Wählen Sie das gewünschte Formular aus, füllen Sie die angezeigten Felder aus und folgen Sie den in der App vorgesehenen Schritten. Welche Daten erhoben werden, hängt von der jeweiligen Formular-Konfiguration ab.</p>",
+    "<h3>Für wen ist diese App?</h3>",
+    "<p>Die App richtet sich an Bürger:innen, Verwaltungen und Organisationen, die einfache digitale Formulare bereitstellen möchten. Besondere Datenkenntnisse sind für die Nutzung nicht erforderlich.</p>",
+    "<h3>Datenquelle</h3>",
+    "<p>Die Formulare werden aus einer konfigurierten JSON-Ressource geladen.</p>",
+    "<ul><li><strong>Open Data Portal:</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li></ul>",
+    "<h3>Open Data App Store</h3>",
+    "<p>Diese App ist für den Open Data App Store vorbereitet und kann mit eigenen Formular-Definitionen betrieben werden.</p>"
+  ],
   "kontakt": "Tel.: <a href='tel:+49711310093100'>0711-31009-3100</a><br>Fax: <a href='tel:+49711310093108'>0711-31009-3108</a><br>E-Mail: <a href='mailto:info@ondics.de'>info@ondics.de</a>",
   "impressum": "Ondics GmbH<br>Wolfgang Clauss<br>Blumenstrasse 19<br><a href='https://www.ondics.de/' target='_blank'>https://www.ondics.de/</a>",
   "datenschutz": "",
@@ -14,7 +28,7 @@
   "fusszeile": "(C) Copyright 2025 | Inhalt: Stadt Esslingen | App: Mueller GmbH | Provided by: Ondics GmbH",
   "apiurl": "../odas-config/formular_multiTemplate.json",
   "sprache": "de",
-  "datenquelleHinweis": "",
-  "datenStand": "",
-  "weiterfuehrendeLinks": ""
+  "datenquelleHinweis": "<p>Die Formular-App lädt Formular-Definitionen aus der konfigurierten JSON-Ressource und erzeugt daraus Eingabemasken im Browser. Welche Felder angezeigt werden und welche Daten abgefragt werden, hängt vollständig von der Formular-Konfiguration der jeweiligen Instanz ab.</p>",
+  "datenStand": "Stand: abhängig von der konfigurierten Formular-Ressource",
+  "weiterfuehrendeLinks": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>"
 }
