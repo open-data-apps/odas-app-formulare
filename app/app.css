@@ -159,3 +159,63 @@ button:disabled {
 .form-check-input {
   border: 1px solid var(--border-color);
 }
+
+/* Schale 4: Methodik-Box */
+.fo-methodik {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  background: var(--bs-body-bg);
+  overflow: hidden;
+}
+
+.fo-methodik-toggle {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  text-align: left;
+}
+
+.fo-methodik-toggle:hover,
+.fo-methodik-toggle:focus-visible {
+  background: rgba(var(--bs-primary-rgb), 0.05);
+  outline: none;
+}
+
+.fo-methodik-chevron {
+  transition: transform 0.18s ease;
+}
+
+.fo-methodik-toggle[aria-expanded="true"] .fo-methodik-chevron {
+  transform: rotate(180deg);
+}
+
+.fo-methodik-content {
+  border-top: 1px solid var(--bs-border-color);
+  padding: 1rem;
+}
+
+.fo-methodik-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Schale 4: Weitere Informationen */
+.fo-weitere-infos {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  background: var(--bs-body-bg);
+  padding: 1rem;
+}
+
+.fo-weitere-infos-content :last-child {
+  margin-bottom: 0;
+}
+
+.fo-weitere-infos-content a {
+  overflow-wrap: anywhere;
+}

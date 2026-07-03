@@ -3,7 +3,7 @@
   "app-entwickler-name": "mueller-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/app-icon.png",
   "kurzbeschreibung": "Die App macht das Erstellen und Verwalten von Formularen kinderleicht. Ob Anträge, Umfragen oder Rückmeldungen – alles digital und unkompliziert.",
@@ -117,6 +117,8 @@
         "Die Formular-App zeigt die jeweils definierten Formulare.",
         "Diese besitzen Standardformate wie Textformular oder Bestätigungsformular.",
         "Die Daten werden tagesaktuell gehalten. Bei Änderungen versuchen wir, den Datenbestand immer sofort zu aktualisieren.",
+        "## Für wen ist diese App?",
+        "Diese App ermöglicht das digitale Ausfüllen und Einreichen von Formularen. Sie richtet sich an Bürger:innen, die Behördengänge online erledigen möchten.",
         "## App-Anbieter",
         "Die App wird bereit gestellt von <a href=\"{{odp.anbieter.url}}\">{{odp.anbieter.name}}</a>",
         "## Datenquelle",
@@ -172,16 +174,6 @@
       ],
       "erforderlich": "ja"
     },
-    "urldaten": {
-      "label": "URL zum Datensatz im ODP",
-      "hilfe": "Der Datensatz im Open Data Portal mit den JSON-Einzeldateien des Formularschranks",
-      "format": {
-        "typ": "url"
-      },
-      "default": "{{appconfig.datensatz-url}}",
-      "beispiel": "https://open-data-musterstadt.ckan.de/dataset/formulare",
-      "erforderlich": "ja"
-    },
     "fusszeile": {
       "label": "Fußzeile",
       "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
@@ -224,6 +216,27 @@
       "default": "",
       "beispiel": "",
       "erforderlich": "ja"
+    },
+    "datenquelleHinweis": {
+      "label": "Methodik / Datenquelle-Hinweis",
+      "hilfe": "Herkunft, Erhebungsmethode, Limitierungen (Markdown/HTML). Leer = ausgeblendet.",
+      "format": { "typ": "markdown" },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "datenStand": {
+      "label": "Datenstand",
+      "hilfe": "Freitext-Datum, z.B. 'Stand: Januar 2025'. Leer = ausgeblendet.",
+      "format": { "typ": "string", "laenge": 60 },
+      "default": "",
+      "erforderlich": "nein"
+    },
+    "weiterfuehrendeLinks": {
+      "label": "Weiterführende Links",
+      "hilfe": "Verwandte Datensätze / Hintergrundquellen (Markdown/HTML). Leer = ausgeblendet.",
+      "format": { "typ": "markdown" },
+      "default": "",
+      "erforderlich": "nein"
     }
   },
   "daten": {

@@ -4,6 +4,12 @@
  *
  */
 let loadedData = null;
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
 let currentPage = 1;
 let formDataStorage = {};
 
@@ -29,7 +35,12 @@ async function app(configData, enclosingHtmlDivElement) {
         </div>
       </div>
     </div>
-  </div>`;
+  </div><div id="fo-schale4" class="container"></div>`;
+
+  var foSchale4 = document.getElementById("fo-schale4");
+  if (foSchale4) {
+    foSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
+  }
 
   const formListContainer = document.getElementById("formListContainer");
   const urlString = window.location.href;
@@ -512,6 +523,41 @@ function loadPageDataIntoFields(page, form) {
       }
     }
   });
+}
+
+function methodikBox(configdata) {
+  var hinweis = String(configdata.datenquelleHinweis || "").trim();
+  var stand = String(configdata.datenStand || "").trim();
+  if (!hinweis && !stand) return "";
+  var standZeile = stand
+    ? '<p class="text-muted small mb-2">' + escapeHtml(stand) + "</p>"
+    : "";
+  return (
+    '<section class="fo-methodik mt-4">' +
+    '<button class="fo-methodik-toggle collapsed" type="button" ' +
+    'data-bs-toggle="collapse" data-bs-target="#fo-methodik-body" ' +
+    'aria-expanded="false" aria-controls="fo-methodik-body">' +
+    '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
+    '<span class="fo-methodik-chevron" aria-hidden="true">&#9662;</span>' +
+    "</button>" +
+    '<div id="fo-methodik-body" class="collapse">' +
+    '<div class="fo-methodik-content">' +
+    standZeile +
+    hinweis +
+    "</div></div></section>"
+  );
+}
+
+function renderWeitereInfos(configdata) {
+  var links = (configdata.weiterfuehrendeLinks || "").trim();
+  if (!links) return "";
+  return (
+    '<section class="fo-weitere-infos mt-4">' +
+    '<h2 class="h5 mb-3">Weitere Informationen</h2>' +
+    '<div class="fo-weitere-infos-content">' +
+    links +
+    "</div></section>"
+  );
 }
 
 /*
