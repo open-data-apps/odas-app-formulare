@@ -28,7 +28,7 @@
     "Verwaltungsprozess"
   ],
   "tags-dateityp": [
-    "json"
+    "JSON"
   ],
   "tags-datenart": [
     "App-Spezifikation"
@@ -41,7 +41,6 @@
     "/assets/Mobile_Screenshot.png"
   ],
   "branding-css": "",
-  "apiversion": "1",
   "instanz-config": {
     "feedback-email": {
       "label": "Feedback E-Mail",
