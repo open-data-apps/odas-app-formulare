@@ -1,5 +1,6 @@
 {
   "apiVersion": "1",
+  "proxyAktiv": "nein",
   "titel": "Städtischer Formularschrank",
   "seitentitel": "Formular",
   "icon": "logo_ondics.png",
