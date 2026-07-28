@@ -42,6 +42,29 @@ async function app(configData, enclosingHtmlDivElement) {
     foSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
   }
 
+  // Das Logo verlinkt auf "#startseite". Innerhalb der Formularansicht steht der Hash
+  // bereits darauf, weil das Formular Teil der Startseite ist. Der Browser feuert dann
+  // kein "hashchange" und die Base-Runtime rendert nicht neu. Deshalb hier einmalig
+  // selbst zuruecksetzen. Das Logo liegt im Header ausserhalb des App-Containers und
+  // ueberlebt jeden Rerender, daher der Guard gegen Mehrfachregistrierung.
+  //
+  // HINWEIS: Dies ist ein App-lokaler Workaround. Das Template loest denselben Fall seit
+  // oda-generic 1.3.0 zentral ueber setupSamePageLinks() in app/app-base.js. Sobald die
+  // Base dieser App auf den Template-Stand gehoben ist (Review.md, F-16), kann der
+  // folgende Block ersatzlos entfallen.
+  const logoLink = document.querySelector(
+    '#logo-bootstrap a[href="#startseite"]',
+  );
+  if (logoLink && logoLink.dataset.foStartseiteReset !== "ja") {
+    logoLink.dataset.foStartseiteReset = "ja";
+    logoLink.addEventListener("click", () => {
+      const hash = window.location.hash;
+      if (hash === "" || hash === "#startseite") {
+        loadPage("startseite");
+      }
+    });
+  }
+
   const formListContainer = document.getElementById("formListContainer");
   const urlString = window.location.href;
   const url = new URL(urlString);
@@ -129,7 +152,7 @@ async function app(configData, enclosingHtmlDivElement) {
         page < getMaxPage(form.pages)
           ? `<button type="button" id="nextButton" class="btn btn-primary btn-lg">weiter</button>`
           : `<button type="submit" id="submitButton" class="btn btn-primary btn-lg">Absenden</button>`
-      }</div></div></form>`;
+      }</div></div><div id="fo-submit-status" class="mt-3"></div></form>`;
 
       formContainer.innerHTML = descriptionHTML + formHTML;
 
@@ -160,8 +183,9 @@ async function app(configData, enclosingHtmlDivElement) {
               const summary = Object.entries(dataObj)
                 .map(([k, v]) => `${k}: ${v}`)
                 .join("\n");
-              const urlString = window.location.href;
-              const mailUrl = `${urlString}mail`;
+              // Endpunkt aus dem App-Basispfad bilden, nicht aus window.location.href:
+              // die Base-Runtime setzt immer einen Hash, der sonst in der URL landet.
+              const mailUrl = `${getOdasAppBasePath()}/mail`;
               // Payload nur mit emailCC wenn Option angekreuzt
               const payload = { content: summary };
               const copyCheckbox = document.getElementById("emailCopyCheckbox");
@@ -170,16 +194,31 @@ async function app(configData, enclosingHtmlDivElement) {
                   document.getElementById("emailAddress")?.value || "";
                 payload.emailCC = email;
               }
+
+              const submitButton = document.getElementById("submitButton");
+              const statusContainer =
+                document.getElementById("fo-submit-status");
+              if (statusContainer) statusContainer.innerHTML = "";
+              if (submitButton) submitButton.disabled = true;
+
               try {
-                await fetch(mailUrl, {
+                const response = await fetch(mailUrl, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(payload),
                 });
+                if (!response.ok) {
+                  throw new Error(`HTTP ${response.status}`);
+                }
+                confirmationpage(enclosingHtmlDivElement);
               } catch (err) {
                 console.error("Mail senden fehlgeschlagen", err);
+                if (statusContainer) {
+                  statusContainer.innerHTML =
+                    '<div class="alert alert-danger" role="alert">Das Formular konnte nicht übermittelt werden. Bitte versuchen Sie es später erneut. Ihre Eingaben bleiben erhalten.</div>';
+                }
+                if (submitButton) submitButton.disabled = false;
               }
-              confirmationpage(enclosingHtmlDivElement);
             }
           });
       }
@@ -601,10 +640,16 @@ function renderWeitereInfos(configdata) {
   if (!links) return "";
   return (
     '<section class="fo-weitere-infos mt-4">' +
-    '<h2 class="h5 mb-3">Weitere Informationen</h2>' +
+    '<button class="fo-weitere-infos-toggle collapsed" type="button" ' +
+    'data-bs-toggle="collapse" data-bs-target="#fo-weitere-infos-body" ' +
+    'aria-expanded="false" aria-controls="fo-weitere-infos-body">' +
+    '<h2 class="h5 mb-0">Weitere Informationen</h2>' +
+    '<span class="fo-weitere-infos-chevron" aria-hidden="true">&#9662;</span>' +
+    "</button>" +
+    '<div id="fo-weitere-infos-body" class="collapse">' +
     '<div class="fo-weitere-infos-content">' +
     links +
-    "</div></section>"
+    "</div></div></section>"
   );
 }
 

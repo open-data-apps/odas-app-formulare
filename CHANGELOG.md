@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.1 - 2026-07-28
+
+- **FIX:** Mail-Endpunkt wird aus dem App-Basispfad (`getOdasAppBasePath()`) gebildet statt aus `window.location.href`; der Hash der Base-Runtime landete bisher in der URL, sodass der POST auf der eigenen `index.html` statt auf `…/mail` ankam
+- **FIX:** Absenden prüft jetzt den HTTP-Status; die Bestätigungsseite erscheint nur bei erfolgreicher Übermittlung. Bei Fehlern erscheint eine sichtbare Meldung, das Formular samt Eingaben bleibt erhalten und der Absende-Button ist während des Requests gesperrt
+- **FIX:** Klick auf das Logo führt aus der Formularansicht zurück zur Formularauswahl. Der Hash steht dort bereits auf `#startseite`, sodass kein `hashchange` ausgelöst wurde und die Base-Runtime nicht neu gerendert hat
+- **ENH:** Box „Weitere Informationen" ist wie die Methodik-Box ein- und ausklappbar; beide teilen sich jetzt dieselben CSS-Regeln
+
 ## 1.4.0 - 2026-07-24
 
 - **FIX:** Laufzeit-Fehlermeldung wird vor der Anzeige HTML-maskiert (`escapeHtmlForBase`); ein Fehlertext kann kein Markup mehr in die Seite einschleusen (XSS)
