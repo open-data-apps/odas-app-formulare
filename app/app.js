@@ -42,29 +42,6 @@ async function app(configData, enclosingHtmlDivElement) {
     foSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
   }
 
-  // Das Logo verlinkt auf "#startseite". Innerhalb der Formularansicht steht der Hash
-  // bereits darauf, weil das Formular Teil der Startseite ist. Der Browser feuert dann
-  // kein "hashchange" und die Base-Runtime rendert nicht neu. Deshalb hier einmalig
-  // selbst zuruecksetzen. Das Logo liegt im Header ausserhalb des App-Containers und
-  // ueberlebt jeden Rerender, daher der Guard gegen Mehrfachregistrierung.
-  //
-  // HINWEIS: Dies ist ein App-lokaler Workaround. Das Template loest denselben Fall seit
-  // oda-generic 1.3.0 zentral ueber setupSamePageLinks() in app/app-base.js. Sobald die
-  // Base dieser App auf den Template-Stand gehoben ist (Review.md, F-16), kann der
-  // folgende Block ersatzlos entfallen.
-  const logoLink = document.querySelector(
-    '#logo-bootstrap a[href="#startseite"]',
-  );
-  if (logoLink && logoLink.dataset.foStartseiteReset !== "ja") {
-    logoLink.dataset.foStartseiteReset = "ja";
-    logoLink.addEventListener("click", () => {
-      const hash = window.location.hash;
-      if (hash === "" || hash === "#startseite") {
-        loadPage("startseite");
-      }
-    });
-  }
-
   const formListContainer = document.getElementById("formListContainer");
   const urlString = window.location.href;
   const url = new URL(urlString);
