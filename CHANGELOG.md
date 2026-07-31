@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.0 - 2026-07-31
+- CHG: fehlendes Pflicht-Asset assets/branding.css ergaenzt und brandingCSSFile lokal aktiviert
+
 ## 1.6.0 - 2026-07-31
 - FIX: escapeHtml() von der DOM- auf die Regex-Variante umgestellt (F-08); die alte Fassung maskierte " und ' nicht
 - FIX: Maskierung auf alle Daten- und Attributkontexte ausgedehnt (F-08)

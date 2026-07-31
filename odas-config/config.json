@@ -5,7 +5,7 @@
   "seitentitel": "Formular",
   "icon": "logo_ondics.png",
   "brandingCSS": "",
-  "brandingCSSFile": "",
+  "brandingCSSFile": "../assets/branding.css",
   "beschreibung": [
     "<p>Die Formular-App stellt digitale Formulare übersichtlich bereit und macht Rückmeldungen, Anträge oder einfache Eingaben leichter zugänglich.</p>",
     "<p>Formularvorlagen können konfiguriert und in einer einheitlichen Oberfläche genutzt werden.</p>",
