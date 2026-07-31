@@ -5,10 +5,13 @@
  */
 let loadedData = null;
 
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
+function escapeHtml(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 let currentPage = 1;
 let formDataStorage = {};
@@ -65,8 +68,8 @@ async function app(configData, enclosingHtmlDivElement) {
       listItem.className = "list-group-item list-group-item-action";
       listItem.innerHTML = `
     <div class="form-item">
-      <h5 class="form-label text-center">${form.label}</h5>
-      <p class="form-description text-center">${form.description}</p>
+      <h5 class="form-label text-center">${escapeHtml(form.label)}</h5>
+      <p class="form-description text-center">${escapeHtml(form.description)}</p>
     </div>`;
 
       listItem.addEventListener("click", () => loadDynamicForm(form));
@@ -89,8 +92,8 @@ async function app(configData, enclosingHtmlDivElement) {
       const pageData = form.pages.find((p) => p.page === page);
       if (!pageData) return;
 
-      let descriptionHTML = `<div class="row"><div class="col-sm-12 text-center"><p class="form-label-style">${pageData.title}: ${pageData.description}</p></div></div>`;
-      let formHTML = `<form id="${form.id}" class="form-horizontal">`;
+      let descriptionHTML = `<div class="row"><div class="col-sm-12 text-center"><p class="form-label-style">${escapeHtml(pageData.title)}: ${escapeHtml(pageData.description)}</p></div></div>`;
+      let formHTML = `<form id="${escapeHtml(form.id)}" class="form-horizontal">`;
 
       switch (pageData.type) {
         case "textformular":
@@ -107,11 +110,11 @@ async function app(configData, enclosingHtmlDivElement) {
             )
               .map(
                 ([label, value]) =>
-                  `<li class="list-group-item"><strong>${label}:</strong> ${value}</li>`
+                  `<li class="list-group-item"><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</li>`
               )
               .join("")}</ul></div>`;
           }
-          formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="consentCheckbox" required><label class="form-check-label" for="consentCheckbox">${pageData.consentForm}</label></div></div>`;
+          formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="consentCheckbox" required><label class="form-check-label" for="consentCheckbox">${escapeHtml(pageData.consentForm)}</label></div></div>`;
           if (pageData.emailcopy === "ja") {
             formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="emailCopyCheckbox"><label class="form-check-label" for="emailCopyCheckbox">Ich möchte eine Kopie per E-Mail erhalten</label></div><div id="emailInputContainer" style="margin-top: 10px;"><label for="emailAddress" class="form-label">E-Mail-Adresse</label><input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="Ihre E-Mail-Adresse" required></div></div>`;
           }
@@ -297,15 +300,15 @@ async function app(configData, enclosingHtmlDivElement) {
       case "email":
         return `
       <div class="form-group row">
-        <label for="${field.id}" class="col-sm-5 col-form-label">${
-          field.label
+        <label for="${escapeHtml(field.id)}" class="col-sm-5 col-form-label">${
+          escapeHtml(field.label)
         }:</label>
         <div class="col-sm-7">
-          <input type="${field.type}" id="${field.id}" name="${
-          field.name
+          <input type="${escapeHtml(field.type)}" id="${escapeHtml(field.id)}" name="${
+          escapeHtml(field.name)
         }" class="form-control"
             ${field.required ? "required" : ""} ${
-          field.maxLength ? `maxlength="${field.maxLength}"` : ""
+          field.maxLength ? `maxlength="${escapeHtml(field.maxLength)}"` : ""
         }>
         </div>
       </div>`;
@@ -313,16 +316,16 @@ async function app(configData, enclosingHtmlDivElement) {
         let options = "";
         if (field.options && Array.isArray(field.options)) {
           field.options.forEach((option) => {
-            options += `<option value="${option.value}">${option.label}</option>`;
+            options += `<option value="${escapeHtml(option.value)}">${escapeHtml(option.label)}</option>`;
           });
         }
         return `
       <div class="form-group row">
-        <label for="${field.id}" class="col-sm-5 col-form-label">${
-          field.label
+        <label for="${escapeHtml(field.id)}" class="col-sm-5 col-form-label">${
+          escapeHtml(field.label)
         }:</label>
         <div class="col-sm-7">
-          <select id="${field.id}" name="${field.name}" class="form-select" ${
+          <select id="${escapeHtml(field.id)}" name="${escapeHtml(field.name)}" class="form-select" ${
           field.required ? "required" : ""
         }>
             ${options}
@@ -332,23 +335,23 @@ async function app(configData, enclosingHtmlDivElement) {
       case "ja-nein":
         return `
       <div class="form-group row">
-        <label class="col-sm-5 col-form-label">${field.label}:</label>
+        <label class="col-sm-5 col-form-label">${escapeHtml(field.label)}:</label>
         <div class="col-sm-7">
           <div class="form-check form-check-inline" style="margin-right:0.3rem;">
             <input class="form-check-input" type="radio" name="${
-              field.name
-            }" id="${field.id}_ja" value="Ja" ${
+              escapeHtml(field.name)
+            }" id="${escapeHtml(field.id)}_ja" value="Ja" ${
           field.required ? "required" : ""
         }>
-            <label class="form-check-label" for="${field.id}_ja">Ja</label>
+            <label class="form-check-label" for="${escapeHtml(field.id)}_ja">Ja</label>
           </div>
           <div class="form-check form-check-inline" style="margin-right:0.3rem;">
             <input class="form-check-input" type="radio" name="${
-              field.name
-            }" id="${field.id}_nein" value="Nein" ${
+              escapeHtml(field.name)
+            }" id="${escapeHtml(field.id)}_nein" value="Nein" ${
           field.required ? "required" : ""
         }>
-            <label class="form-check-label" for="${field.id}_nein">Nein</label>
+            <label class="form-check-label" for="${escapeHtml(field.id)}_nein">Nein</label>
           </div>
         </div>
       </div>`;
@@ -361,16 +364,16 @@ async function app(configData, enclosingHtmlDivElement) {
               typeof option === "string" ? option : option.label;
             listItems += `
               <label class="list-group-item list-group-item-action d-flex align-items-center" style="padding: 0.2rem 0.4rem; font-size: 1rem; line-height: 1;">
-                <input class="form-check-input me-2" type="checkbox" id="${field.id}_${index}" name="${field.name}" value="${optionLabel}">
-                <span>${optionLabel}</span>
+                <input class="form-check-input me-2" type="checkbox" id="${escapeHtml(field.id)}_${index}" name="${escapeHtml(field.name)}" value="${escapeHtml(optionLabel)}">
+                <span>${escapeHtml(optionLabel)}</span>
               </label>`;
           });
         }
         return `
       <div class="form-group row">
-        <label class="col-sm-5 col-form-label">${field.label}:</label>
+        <label class="col-sm-5 col-form-label">${escapeHtml(field.label)}:</label>
         <div class="col-sm-7">
-          <div class="list-group" id="${field.id}-list">
+          <div class="list-group" id="${escapeHtml(field.id)}-list">
             ${listItems}
           </div>
         </div>

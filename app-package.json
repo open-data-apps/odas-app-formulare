@@ -1,11 +1,11 @@
 {
   "app-entwickler-id": "12343",
-  "app-entwickler-name": "mueller-gmbh",
+  "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
-  "app-icon": "app/app-icon.png",
+  "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Die App macht das Erstellen und Verwalten von Formularen kinderleicht. Ob Anträge, Umfragen oder Rückmeldungen – alles digital und unkompliziert.",
   "beschreibung": [
     "_multiline_",
@@ -34,38 +34,18 @@
     "App-Spezifikation"
   ],
   "screenshots": [
-    "/assets/Desktop_Screenshot.png",
-    "/assets/Desktop_Screenshot_2.png",
-    "/assets/Desktop_Screenshot_3.png",
-    "/assets/Desktop_Screenshot_4.png",
-    "/assets/Mobile_Screenshot.png"
+    "assets/Desktop_Screenshot.png",
+    "assets/Desktop_Screenshot_2.png",
+    "assets/Desktop_Screenshot_3.png",
+    "assets/Desktop_Screenshot_4.png",
+    "assets/Mobile_Screenshot.png"
   ],
   "branding-css": "",
   "instanz-config": {
-    "feedback-email": {
-      "label": "Feedback E-Mail",
-      "hilfe": "E-Mail-Adresse für das Feedback",
-      "default": "",
-      "format": {
-        "typ": "string",
-        "laenge": 50
-      },
-      "erforderlich": "nein"
-    },
     "seitentitel": {
       "label": "Seitentitel",
       "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt",
       "default": "Formular",
-      "format": {
-        "typ": "string",
-        "laenge": 50
-      },
-      "erforderlich": "ja"
-    },
-    "lizenz": {
-      "label": "Lizenz",
-      "hilfe": "Hier muss der Lizenzkey eingetragen werden.",
-      "default": "",
       "format": {
         "typ": "string",
         "laenge": 50
@@ -168,7 +148,7 @@
       "label": "Fußzeile",
       "hilfe": "Wird auf der Website unten in der Fusszeile angezeigt.",
       "format": {
-        "typ": "String",
+        "typ": "string",
         "laenge": 50
       },
       "default": "(C) Copyright {{jahr}} | App & Daten: {{odp.anbieter.name}} | App-Entwickler: {{app.developer.name}} | ODAS: {{odas.betreiber.name}}",
@@ -201,12 +181,12 @@
     "sprache": {
       "label": "Sprache der App",
       "hilfe": "Angabe der App-Sprache",
+      "default": "de",
       "format": {
         "typ": "dropdown",
         "optionen": [
           "de"
-        ],
-        "default": "de"
+        ]
       },
       "erforderlich": "ja"
     },
@@ -247,11 +227,31 @@
       },
       "default": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>",
       "erforderlich": "nein"
+    },
+    "brandingCSS": {
+      "label": "Zusätzliches Branding-CSS",
+      "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "string",
+        "laenge": 10000
+      },
+      "erforderlich": "nein"
+    },
+    "brandingCSSFile": {
+      "label": "Branding-CSS-Datei",
+      "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "url",
+        "laenge": 500
+      },
+      "erforderlich": "nein"
     }
   },
   "daten": {
     "beschreibung": "Die Formular-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
-    "schema": "",
+    "schema": "assets/schema.json",
     "beispiel": "",
     "beispiel-url": ""
   },

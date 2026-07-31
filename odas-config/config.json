@@ -26,7 +26,7 @@
   "datenschutz": "",
   "urlODP": "<a href='https://offenedaten.esslingen.de' target='_blank'>https://offenedaten.esslingen.de</a>",
   "urlDaten": "<a href='https://offenedaten.esslingen.de/Ondics_GmbH' target='_blank'>https://offenedaten.esslingen.de/Ondics_GmbH</a>",
-  "fusszeile": "(C) Copyright 2025 | Inhalt: Stadt Esslingen | App: Mueller GmbH | Provided by: Ondics GmbH",
+  "fusszeile": "(C) Copyright 2025 | Inhalt: Stadt Esslingen | App: Ondics GmbH | Provided by: Ondics GmbH",
   "apiurl": "../odas-config/formular_multiTemplate.json",
   "sprache": "de",
   "datenquelleHinweis": "<p>Die Formular-App lädt Formular-Definitionen aus der konfigurierten JSON-Ressource und erzeugt daraus Eingabemasken im Browser. Welche Felder angezeigt werden und welche Daten abgefragt werden, hängt vollständig von der Formular-Konfiguration der jeweiligen Instanz ab.</p>",
