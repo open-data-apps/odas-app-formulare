@@ -58,6 +58,20 @@ Bei `nein` muss die Datenquelle CORS freigeben.
 
 ### Standalone-Betrieb
 
+> **Einschraenkung im Standalone-Betrieb.** Die Kernfunktion dieser App —
+> Absenden eines ausgefuellten Formulars — benoetigt den ODAS-Plattformdienst `…/mail` und
+> steht **ohne ODAS nicht zur Verfuegung**. Die App uebergibt das ausgefuellte Formular an den ODAS-Mailendpunkt `…/mail`.
+Empfaenger und Versandweg liegen vollstaendig im ODAS-Backend.
+> Die mitgelieferte `nginx.conf` kennt nur `/`, `= /config`, `/odas-config/` und
+> `/assets/`; ein Request auf `…/mail` landet im Verzeichnis-Handler und
+> ergibt 404. Die Schaltflaeche „Absenden" ist im Standalone-Betrieb
+> daher wirkungslos.
+>
+> Alle uebrigen Funktionen — Oberflaeche, Konfiguration, Anzeige — laufen standalone
+> vollstaendig. Wer die App eigenstaendig betreiben will, muss `…/mail` durch
+> einen eigenen Dienst ersetzen; das ist derzeit **nicht** ueber die Konfiguration
+> moeglich, sondern erfordert eine Codeanpassung.
+
 Voraussetzung: ein laufender Traefik mit dem externen Docker-Netzwerk `proxynet`,
 dem EntryPoint `websecure` und dem Zertifikatsresolver `letsencrypt`.
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.0 - 2026-07-31
+- DOC: Abschnitt „Einschraenkung im Standalone-Betrieb" ergaenzt (F-04) - der
+  Formularversand benoetigt den ODAS-Dienst `…/mail` und steht standalone nicht bereit
+- DOC: Denselben Hinweis in die App-Beschreibung („Ueber diese App") aufgenommen
+
 ## 1.7.0 - 2026-07-31
 - CHG: fehlendes Pflicht-Asset assets/branding.css ergaenzt und brandingCSSFile lokal aktiviert
 

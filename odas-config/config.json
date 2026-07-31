@@ -18,6 +18,7 @@
     "<h3>Datenquelle</h3>",
     "<p>Die Formulare werden aus einer konfigurierten JSON-Ressource geladen.</p>",
     "<ul><li><strong>Open Data Portal:</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><strong>Ressource/API-Endpunkt:</strong> <a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li></ul>",
+    "<p><strong>Hinweis zum Betrieb:</strong> Das Absenden eines Formulars l&auml;uft &uuml;ber den ODAS-Mailversand. Beim eigenst&auml;ndigen Betrieb ohne ODAS werden die Formulare weiterhin angezeigt und ausgef&uuml;llt, der Versand steht dort jedoch nicht zur Verf&uuml;gung.</p>",
     "<h3>Open Data App Store</h3>",
     "<p>Diese App ist für den Open Data App Store vorbereitet und kann mit eigenen Formular-Definitionen betrieben werden.</p>"
   ],
