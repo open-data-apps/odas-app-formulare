@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Die App macht das Erstellen und Verwalten von Formularen kinderleicht. Ob Anträge, Umfragen oder Rückmeldungen – alles digital und unkompliziert.",
@@ -141,8 +141,9 @@
       },
       "default": [
         "_multiline_",
-        "Alle Daten sind geschützt.",
-        ""
+        "<p>Diese App verarbeitet die angezeigten offenen Daten im Browser. Ihre Formulareingaben werden an den Mail-Endpunkt der ODAS-Instanz übermittelt. Es werden keine Cookies gesetzt und keine Nutzungsstatistiken erhoben.</p>",
+        "<p>Alle für die Darstellung benötigten Programmbibliotheken werden mit der App ausgeliefert. Beim Aufruf werden dafür keine externen Server kontaktiert.</p>",
+        "<p>Die angezeigten Daten werden vom Browser direkt aus der konfigurierten Datenquelle geladen. Dabei werden technisch bedingt IP-Adresse und Browserkennung an deren Betreiber übermittelt. Maßgeblich ist der Schalter <code>proxyAktiv</code> der Instanz-Konfiguration.</p>"
       ],
       "erforderlich": "ja"
     },
