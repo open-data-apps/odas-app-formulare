@@ -17,6 +17,7 @@ let currentPage = 1;
 let formDataStorage = {};
 
 async function app(configData, enclosingHtmlDivElement) {
+  const root = enclosingHtmlDivElement;
   await LoadJSONData();
   document.body.classList.remove("register-page");
 
@@ -29,23 +30,23 @@ async function app(configData, enclosingHtmlDivElement) {
   enclosingHtmlDivElement.innerHTML = `<div class="container">
     <div class="row justify-content-center">
       <div class="col-12" id="secondarySites">
-        <h1 id="title-text-2" class="text-center">Formularauswahl</h1>
-        <div id="formListContainer" class="mt-4">
+        <h1 id="fo-title-text-2" class="text-center">Formularauswahl</h1>
+        <div id="fo-formListContainer" class="mt-4">
           <!-- Dynamische Liste oder Formularauswahl -->
         </div>
-        <div id="dynamicFormContainer" class="mt-4">
+        <div id="fo-dynamicFormContainer" class="mt-4">
           <!-- Dynamische Inhalte des Formulars -->
         </div>
       </div>
     </div>
   </div><div id="fo-schale4" class="container"></div>`;
 
-  var foSchale4 = document.getElementById("fo-schale4");
+  var foSchale4 = root.querySelector("#fo-schale4");
   if (foSchale4) {
     foSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
   }
 
-  const formListContainer = document.getElementById("formListContainer");
+  const formListContainer = root.querySelector("#fo-formListContainer");
   const urlString = window.location.href;
   const url = new URL(urlString);
   const formParam = url.searchParams.get("form");
@@ -80,9 +81,9 @@ async function app(configData, enclosingHtmlDivElement) {
   }
 
   function loadDynamicForm(form) {
-    document.getElementById("title-text-2").textContent = form.label;
-    const formContainer = document.getElementById("dynamicFormContainer");
-    const formListContainer = document.getElementById("formListContainer");
+    root.querySelector("#fo-title-text-2").textContent = form.label;
+    const formContainer = root.querySelector("#fo-dynamicFormContainer");
+    const formListContainer = root.querySelector("#fo-formListContainer");
     formListContainer.style.display = "none";
 
     let currentPage = 1;
@@ -94,7 +95,6 @@ async function app(configData, enclosingHtmlDivElement) {
 
       let descriptionHTML = `<div class="row"><div class="col-sm-12 text-center"><p class="form-label-style">${escapeHtml(pageData.title)}: ${escapeHtml(pageData.description)}</p></div></div>`;
       let formHTML = `<form id="${escapeHtml(form.id)}" class="form-horizontal">`;
-
       switch (pageData.type) {
         case "textformular":
         case "customformular":
@@ -116,7 +116,7 @@ async function app(configData, enclosingHtmlDivElement) {
           }
           formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="consentCheckbox" required><label class="form-check-label" for="consentCheckbox">${escapeHtml(pageData.consentForm)}</label></div></div>`;
           if (pageData.emailcopy === "ja") {
-            formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="emailCopyCheckbox"><label class="form-check-label" for="emailCopyCheckbox">Ich möchte eine Kopie per E-Mail erhalten</label></div><div id="emailInputContainer" style="margin-top: 10px;"><label for="emailAddress" class="form-label">E-Mail-Adresse</label><input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="Ihre E-Mail-Adresse" required></div></div>`;
+            formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="fo-emailCopyCheckbox"><label class="form-check-label" for="fo-emailCopyCheckbox">Ich möchte eine Kopie per E-Mail erhalten</label></div><div id="emailInputContainer" style="margin-top: 10px;"><label for="fo-emailAddress" class="form-label">E-Mail-Adresse</label><input type="email" class="form-control" id="fo-emailAddress" name="emailAddress" placeholder="Ihre E-Mail-Adresse" required></div></div>`;
           }
           break;
         default:
@@ -124,41 +124,41 @@ async function app(configData, enclosingHtmlDivElement) {
           break;
       }
 
-      formHTML += `<div class="form-group row"><div class="col-sm-4 text-left"><button type="button" id="backToFormsButton" class="btn btn-secondary btn-sm">abbrechen</button></div><div class="col-sm-4 text-center">${
+      formHTML += `<div class="form-group row"><div class="col-sm-4 text-left"><button type="button" id="fo-backToFormsButton" class="btn btn-secondary btn-sm">abbrechen</button></div><div class="col-sm-4 text-center">${
         page > 1
-          ? `<button type="button" id="prevButton" class="btn btn-primary">zurück</button>`
+          ? `<button type="button" id="fo-prevButton" class="btn btn-primary">zurück</button>`
           : ""
       }</div><div class="col-sm-4 text-right">${
         page < getMaxPage(form.pages)
-          ? `<button type="button" id="nextButton" class="btn btn-primary btn-lg">weiter</button>`
-          : `<button type="submit" id="submitButton" class="btn btn-primary btn-lg">Absenden</button>`
+          ? `<button type="button" id="fo-nextButton" class="btn btn-primary btn-lg">weiter</button>`
+          : `<button type="submit" id="fo-submitButton" class="btn btn-primary btn-lg">Absenden</button>`
       }</div></div><div id="fo-submit-status" class="mt-3"></div></form>`;
 
       formContainer.innerHTML = descriptionHTML + formHTML;
 
       if (page > 1) {
-        document.getElementById("prevButton").addEventListener("click", () => {
-          saveCurrentPageData(currentPage, form);
+        root.querySelector("#fo-prevButton").addEventListener("click", () => {
+          saveCurrentPageData(currentPage, form, root);
           currentPage--;
           renderPage(currentPage);
         });
       }
 
       if (page < getMaxPage(form.pages)) {
-        document.getElementById("nextButton").addEventListener("click", () => {
+        root.querySelector("#fo-nextButton").addEventListener("click", () => {
           if (validatePage(currentPage, form)) {
-            saveCurrentPageData(currentPage, form);
+            saveCurrentPageData(currentPage, form, root);
             currentPage++;
             renderPage(currentPage);
           }
         });
       } else {
-        document
-          .getElementById("submitButton")
+        root
+          .querySelector("#fo-submitButton")
           .addEventListener("click", async (e) => {
             e.preventDefault();
             if (validatePage(currentPage, form)) {
-              saveCurrentPageData(currentPage, form);
+              saveCurrentPageData(currentPage, form, root);
               const dataObj = collectFormData(form);
               const summary = Object.entries(dataObj)
                 .map(([k, v]) => `${k}: ${v}`)
@@ -168,16 +168,16 @@ async function app(configData, enclosingHtmlDivElement) {
               const mailUrl = `${getOdasAppBasePath()}/mail`;
               // Payload nur mit emailCC wenn Option angekreuzt
               const payload = { content: summary };
-              const copyCheckbox = document.getElementById("emailCopyCheckbox");
+              const copyCheckbox = root.querySelector("#fo-emailCopyCheckbox");
               if (copyCheckbox && copyCheckbox.checked) {
                 const email =
-                  document.getElementById("emailAddress")?.value || "";
+                  root.querySelector("#fo-emailAddress")?.value || "";
                 payload.emailCC = email;
               }
 
-              const submitButton = document.getElementById("submitButton");
+              const submitButton = root.querySelector("#fo-submitButton");
               const statusContainer =
-                document.getElementById("fo-submit-status");
+                root.querySelector("#fo-submit-status");
               if (statusContainer) statusContainer.innerHTML = "";
               if (submitButton) submitButton.disabled = true;
 
@@ -203,18 +203,18 @@ async function app(configData, enclosingHtmlDivElement) {
           });
       }
 
-      document
-        .getElementById("backToFormsButton")
+      root
+        .querySelector("#fo-backToFormsButton")
         .addEventListener("click", () => {
           formContainer.innerHTML = "";
           formListContainer.style.display = "block";
-          document.getElementById("title-text-2").textContent =
+          root.querySelector("#fo-title-text-2").textContent =
             "Formularauswahl";
         });
     }
 
     renderPage(currentPage);
-    loadPageDataIntoFields(currentPage, form);
+    loadPageDataIntoFields(currentPage, form, root);
   }
 
   function getMaxPage(pages) {
@@ -230,9 +230,9 @@ async function app(configData, enclosingHtmlDivElement) {
     fieldsForPage.forEach((field) => {
       // Spezielle Behandlung für "ja-nein"-Felder, da hier zwei Radio-Buttons verwendet werden
       if (field.type === "ja-nein") {
-        const radioYes = document.getElementById(field.id + "_ja");
-        const radioNo = document.getElementById(field.id + "_nein");
-        const errorElement = document.getElementById(field.id + "-error");
+        const radioYes = root.querySelector("#" + field.id + "_ja");
+        const radioNo = root.querySelector("#" + field.id + "_nein");
+        const errorElement = root.querySelector("#" + field.id + "-error");
         if (field.required && !radioYes.checked && !radioNo.checked) {
           if (!errorElement) {
             const errorMsg = document.createElement("div");
@@ -249,8 +249,8 @@ async function app(configData, enclosingHtmlDivElement) {
       }
 
       // Für alle anderen Feldtypen
-      const fieldElement = document.getElementById(field.id);
-      const errorElement = document.getElementById(field.id + "-error");
+      const fieldElement = root.querySelector("#" + field.id);
+      const errorElement = root.querySelector("#" + field.id + "-error");
       if (field.required && fieldElement && !fieldElement.value.trim()) {
         fieldElement.classList.add("is-invalid");
         if (!errorElement) {
@@ -413,14 +413,14 @@ function confirmationpage(enclosingHtmlDivElement) {
           <p class="text-center">Das Formular wurde erfolgreich übermittelt am ${dateString} um ${timeString} Uhr. Sie können dieses Fenster jetzt schließen.</p>
           <div class="text-center mt-4">
             <h5>Weitere Formulare ausfüllen?</h5>
-            <button type="button" id="backToFormSelectionButton" class="btn btn-primary">Zurück zur Formularauswahl</button>
+            <button type="button" id="fo-backToFormSelectionButton" class="btn btn-primary">Zurück zur Formularauswahl</button>
           </div>
         </div>
       </div>
     </div>
   `;
-  document
-    .getElementById("backToFormSelectionButton")
+  enclosingHtmlDivElement
+    .querySelector("#fo-backToFormSelectionButton")
     .addEventListener("click", () => {
       loadPage("startseite");
     });
@@ -526,7 +526,7 @@ async function LoadJSONData() {
           emailcopy: pageData.emailkopie || "",
           fields:
             pageData.fields?.map((field) => ({
-              id: field.name, // Sollte ggf. entfernt werden, falls nicht benötigt
+              id: "fo-" + field.name, // DOM- und Speicher-ID, mit App-Präfix (F-25); Submit-Payload nutzt field.label
               name: field.name,
               label: field.label,
               required: field.pflichtfeld === "ja",
@@ -549,7 +549,7 @@ async function LoadJSONData() {
   }
 }
 
-function saveCurrentPageData(page, form) {
+function saveCurrentPageData(page, form, root) {
   if (!formDataStorage[form.id]) {
     formDataStorage[form.id] = {};
   }
@@ -561,7 +561,7 @@ function saveCurrentPageData(page, form) {
   if (!pageData) return;
 
   pageData.fields.forEach((field) => {
-    const fieldElement = document.getElementById(field.id);
+    const fieldElement = root.querySelector("#" + field.id);
     if (fieldElement) {
       formDataStorage[form.id][page][field.id] =
         fieldElement.type === "checkbox"
@@ -571,14 +571,14 @@ function saveCurrentPageData(page, form) {
   });
 }
 
-function loadPageDataIntoFields(page, form) {
+function loadPageDataIntoFields(page, form, root) {
   if (!formDataStorage[form.id] || !formDataStorage[form.id][page]) return;
 
   const pageData = form.pages.find((p) => p.page === page);
   if (!pageData) return;
 
   pageData.fields.forEach((field) => {
-    const fieldElement = document.getElementById(field.id);
+    const fieldElement = root.querySelector("#" + field.id);
     if (
       fieldElement &&
       formDataStorage[form.id][page][field.id] !== undefined

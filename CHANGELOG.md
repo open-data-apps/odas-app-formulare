@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.14.0 - 2026-08-06
+- CHG: DOM-Zugriffe auf den App-Container gescopt (F-25, Tranche 3): alle Elemente der App werden über den App-Container (root.querySelector) angesprochen statt über document; unpräfixierte IDs mit `fo-`-Präfix versehen (`title-text-2` → `fo-title-text-2`, `formListContainer` → `fo-formListContainer`, `dynamicFormContainer` → `fo-dynamicFormContainer`, `prevButton` → `fo-prevButton`, `nextButton` → `fo-nextButton`, `submitButton` → `fo-submitButton`, `emailCopyCheckbox` → `fo-emailCopyCheckbox`, `emailAddress` → `fo-emailAddress`, `backToFormsButton` → `fo-backToFormsButton`, `backToFormSelectionButton` → `fo-backToFormSelectionButton`); dynamische Feld-IDs aus dem Formular-Schema werden an der Quelle präfixiert (`field.id = "fo-" + field.name`; Befund: `field.id` wird nur als DOM- und In-Memory-Speicher-ID genutzt, nicht im Submit-Payload)
+
 ## 1.13.0 - 2026-08-06
 - FIX: Datenschutzangabe beschreibt den tatsaechlichen Stand nach dem Vendoring (Welle G)
 
