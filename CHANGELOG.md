@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.16.0 - 2026-08-07
+- FIX: Bootstrap-Ziele instanzeindeutig machen (F-32): `data-bs-target`, `aria-controls` und die div-IDs der Methodik-Box (`fo-methodik-body`) und der Box „Weitere Informationen" (`fo-weitere-infos-body`) werden pro App-Instanz mit einer UID versehen (`fo-methodik-body-i1`, `-i2`, …), damit mehrere Instanzen der App auf einer Seite nicht kollidieren
+
 ## 1.15.0 - 2026-08-07
 - FIX: Dropdown-Optionen ohne `value` fallen auf den Label-Text zurück (Bestandsfehler im Formular-Generator, beim Browsernachweis Tranche 3 gefunden): `escapeHtml(option.value)` erzeugte bei Optionen ohne `value`-Attribut ein leeres `value=""`, dadurch blieb das Select leer und die Pflichtfeld-Validierung blockierte trotz getroffener Auswahl.
 

@@ -15,8 +15,10 @@ function escapeHtml(value = "") {
 }
 let currentPage = 1;
 let formDataStorage = {};
+let foInstanzZaehler = 0;
 
 async function app(configData, enclosingHtmlDivElement) {
+  const foUid = "i" + ++foInstanzZaehler;
   const root = enclosingHtmlDivElement;
   await LoadJSONData();
   document.body.classList.remove("register-page");
@@ -43,7 +45,7 @@ async function app(configData, enclosingHtmlDivElement) {
 
   var foSchale4 = root.querySelector("#fo-schale4");
   if (foSchale4) {
-    foSchale4.innerHTML = methodikBox(configData) + renderWeitereInfos(configData);
+    foSchale4.innerHTML = methodikBox(configData, foUid) + renderWeitereInfos(configData, foUid);
   }
 
   const formListContainer = root.querySelector("#fo-formListContainer");
@@ -592,7 +594,7 @@ function loadPageDataIntoFields(page, form, root) {
   });
 }
 
-function methodikBox(configdata) {
+function methodikBox(configdata, uid) {
   var hinweis = String(configdata.datenquelleHinweis || "").trim();
   var stand = String(configdata.datenStand || "").trim();
   if (!hinweis && !stand) return "";
@@ -602,12 +604,12 @@ function methodikBox(configdata) {
   return (
     '<section class="fo-methodik mt-4">' +
     '<button class="fo-methodik-toggle collapsed" type="button" ' +
-    'data-bs-toggle="collapse" data-bs-target="#fo-methodik-body" ' +
-    'aria-expanded="false" aria-controls="fo-methodik-body">' +
+    'data-bs-toggle="collapse" data-bs-target="#fo-methodik-body-' + uid + '" ' +
+    'aria-expanded="false" aria-controls="fo-methodik-body-' + uid + '">' +
     '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
     '<span class="fo-methodik-chevron" aria-hidden="true">&#9662;</span>' +
     "</button>" +
-    '<div id="fo-methodik-body" class="collapse">' +
+    '<div id="fo-methodik-body-' + uid + '" class="collapse">' +
     '<div class="fo-methodik-content">' +
     standZeile +
     hinweis +
@@ -615,18 +617,18 @@ function methodikBox(configdata) {
   );
 }
 
-function renderWeitereInfos(configdata) {
+function renderWeitereInfos(configdata, uid) {
   var links = (configdata.weiterfuehrendeLinks || "").trim();
   if (!links) return "";
   return (
     '<section class="fo-weitere-infos mt-4">' +
     '<button class="fo-weitere-infos-toggle collapsed" type="button" ' +
-    'data-bs-toggle="collapse" data-bs-target="#fo-weitere-infos-body" ' +
-    'aria-expanded="false" aria-controls="fo-weitere-infos-body">' +
+    'data-bs-toggle="collapse" data-bs-target="#fo-weitere-infos-body-' + uid + '" ' +
+    'aria-expanded="false" aria-controls="fo-weitere-infos-body-' + uid + '">' +
     '<h2 class="h5 mb-0">Weitere Informationen</h2>' +
     '<span class="fo-weitere-infos-chevron" aria-hidden="true">&#9662;</span>' +
     "</button>" +
-    '<div id="fo-weitere-infos-body" class="collapse">' +
+    '<div id="fo-weitere-infos-body-' + uid + '" class="collapse">' +
     '<div class="fo-weitere-infos-content">' +
     links +
     "</div></div></section>"
