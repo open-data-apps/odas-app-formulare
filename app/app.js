@@ -316,7 +316,7 @@ async function app(configData, enclosingHtmlDivElement) {
         let options = "";
         if (field.options && Array.isArray(field.options)) {
           field.options.forEach((option) => {
-            options += `<option value="${escapeHtml(option.value)}">${escapeHtml(option.label)}</option>`;
+            options += `<option value="${escapeHtml(option.value ?? option.label)}">${escapeHtml(option.label)}</option>`;
           });
         }
         return `
