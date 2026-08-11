@@ -13,6 +13,11 @@ function escapeHtml(value = "") {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+function safeHttpUrl(value) {
+  const s = String(value || "").trim();
+  return /^https?:\/\//i.test(s) ? s : "";
+}
 let currentPage = 1;
 let formDataStorage = {};
 let foInstanzZaehler = 0;
@@ -381,17 +386,7 @@ async function app(configData, enclosingHtmlDivElement) {
         </div>
       </div>`;
       default:
-        return `
-      <div class="form-group row">
-        <label for="${field.id}" class="col-sm-5 col-form-label">${
-          field.label
-        }:</label>
-        <div class="col-sm-7">
-          <input type="text" id="${field.id}" name="${
-          field.name
-        }" class="form-control" ${field.required ? "required" : ""}>
-        </div>
-      </div>`;
+        return '<div class="alert alert-warning">Unbekannter Feldtyp "' + escapeHtml(String(field.typ || "")) + '" wird übersprungen.</div>';
     }
   }
 }

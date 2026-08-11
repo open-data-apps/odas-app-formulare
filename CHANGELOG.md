@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.17.0 - 2026-08-11
+- FIX: XSS- und URL-Vertrag geschlossen (F-35): `safeHttpUrl` als Top-Level-Helfer ergänzt; der default-Zweig von `generateFieldHTML` rendert kein Eingabefeld mehr, sondern eine harmlose Konfigurationswarnung mit escaptem Feldtyp
+
 ## 1.16.0 - 2026-08-07
 - FIX: Bootstrap-Ziele instanzeindeutig machen (F-32): `data-bs-target`, `aria-controls` und die div-IDs der Methodik-Box (`fo-methodik-body`) und der Box „Weitere Informationen" (`fo-weitere-infos-body`) werden pro App-Instanz mit einer UID versehen (`fo-methodik-body-i1`, `-i2`, …), damit mehrere Instanzen der App auf einer Seite nicht kollidieren
 
