@@ -3,8 +3,6 @@
  * zuständig.
  *
  */
-let loadedData = null;
-
 function escapeHtml(value = "") {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -18,23 +16,31 @@ function safeHttpUrl(value) {
   const s = String(value || "").trim();
   return /^https?:\/\//i.test(s) ? s : "";
 }
-let currentPage = 1;
-let formDataStorage = {};
 let foInstanzZaehler = 0;
 
 async function app(configData, enclosingHtmlDivElement) {
-  const foUid = "i" + ++foInstanzZaehler;
-  const root = enclosingHtmlDivElement;
-  await LoadJSONData();
+  // F-42: pro Instanz geschlossener State (Closure in app())
+  const state = {
+    uid: "i" + ++foInstanzZaehler,
+    root: enclosingHtmlDivElement,
+    config: configData,
+    disposed: false, // wird in Task 9 (onPageLeave) gesetzt
+    loadedData: null,
+    formDataStorage: {},
+    currentPage: 1,
+  };
+  const root = state.root;
+  const foUid = state.uid;
+  await LoadJSONData(state);
   document.body.classList.remove("register-page");
 
-  if (!loadedData || !loadedData.forms) {
+  if (!state.loadedData || !state.loadedData.forms) {
     console.error("Keine Daten verfügbar");
-    enclosingHtmlDivElement.innerHTML = `<p>Fehler beim Laden der Formulare.</p>`;
+    state.root.innerHTML = `<p>Fehler beim Laden der Formulare.</p>`;
     return;
   }
 
-  enclosingHtmlDivElement.innerHTML = `<div class="container">
+  state.root.innerHTML = `<div class="container">
     <div class="row justify-content-center">
       <div class="col-12" id="secondarySites">
         <h1 id="fo-title-text-2" class="text-center">Formularauswahl</h1>
@@ -59,19 +65,19 @@ async function app(configData, enclosingHtmlDivElement) {
   const formParam = url.searchParams.get("form");
 
   if (formParam) {
-    const selectedForm = loadedData.forms.find((form) => form.id === formParam);
+    const selectedForm = state.loadedData.forms.find((form) => form.id === formParam);
     if (selectedForm) {
       loadDynamicForm(selectedForm);
     }
   }
 
-  if (loadedData.forms.length === 1) {
-    loadDynamicForm(loadedData.forms[0]);
+  if (state.loadedData.forms.length === 1) {
+    loadDynamicForm(state.loadedData.forms[0]);
   } else {
     const formList = document.createElement("ul");
     formList.className = "list-group";
 
-    loadedData.forms.forEach((form) => {
+    state.loadedData.forms.forEach((form) => {
       const listItem = document.createElement("li");
       listItem.className = "list-group-item list-group-item-action";
       listItem.innerHTML = `
@@ -93,7 +99,7 @@ async function app(configData, enclosingHtmlDivElement) {
     const formListContainer = root.querySelector("#fo-formListContainer");
     formListContainer.style.display = "none";
 
-    let currentPage = 1;
+    state.currentPage = 1;
 
     function renderPage(page) {
       formContainer.innerHTML = "";
@@ -145,20 +151,20 @@ async function app(configData, enclosingHtmlDivElement) {
 
       if (page > 1) {
         root.querySelector("#fo-prevButton").addEventListener("click", () => {
-          saveCurrentPageData(currentPage, form, root);
-          currentPage--;
-          renderPage(currentPage);
-          loadPageDataIntoFields(currentPage, form, root);
+          saveCurrentPageData(state, state.currentPage, form);
+          state.currentPage--;
+          renderPage(state.currentPage);
+          loadPageDataIntoFields(state, state.currentPage, form);
         });
       }
 
       if (page < getMaxPage(form.pages)) {
         root.querySelector("#fo-nextButton").addEventListener("click", () => {
-          if (validatePage(currentPage, form)) {
-            saveCurrentPageData(currentPage, form, root);
-            currentPage++;
-            renderPage(currentPage);
-            loadPageDataIntoFields(currentPage, form, root);
+          if (validatePage(state.currentPage, form)) {
+            saveCurrentPageData(state, state.currentPage, form);
+            state.currentPage++;
+            renderPage(state.currentPage);
+            loadPageDataIntoFields(state, state.currentPage, form);
           }
         });
       } else {
@@ -166,8 +172,8 @@ async function app(configData, enclosingHtmlDivElement) {
           .querySelector("#fo-submitButton")
           .addEventListener("click", async (e) => {
             e.preventDefault();
-            if (validatePage(currentPage, form)) {
-              saveCurrentPageData(currentPage, form, root);
+            if (validatePage(state.currentPage, form)) {
+              saveCurrentPageData(state, state.currentPage, form);
               const dataObj = collectFormData(form);
               const summary = Object.entries(dataObj)
                 .map(([k, v]) => `${k}: ${v}`)
@@ -222,8 +228,8 @@ async function app(configData, enclosingHtmlDivElement) {
         });
     }
 
-    renderPage(currentPage);
-    loadPageDataIntoFields(currentPage, form, root);
+    renderPage(state.currentPage);
+    loadPageDataIntoFields(state, state.currentPage, form);
   }
 
   function getMaxPage(pages) {
@@ -284,9 +290,9 @@ async function app(configData, enclosingHtmlDivElement) {
   function collectFormData(form) {
     const data = {};
 
-    if (!formDataStorage[form.id]) return data;
+    if (!state.formDataStorage[form.id]) return data;
 
-    Object.entries(formDataStorage[form.id]).forEach(([page, fields]) => {
+    Object.entries(state.formDataStorage[form.id]).forEach(([page, fields]) => {
       Object.entries(fields).forEach(([fieldId, value]) => {
         const field = form.pages
           .flatMap((p) => p.fields)
@@ -508,12 +514,12 @@ async function fetchOdasJson(targetUrl, configdata = {}) {
   return JSON.parse(await fetchOdasResource(targetUrl, configdata));
 }
 
-async function LoadJSONData() {
+async function LoadJSONData(state) {
   try {
-    const data = await fetchOdasJson(configData.apiurl, configData);
+    const data = await fetchOdasJson(state.config.apiurl, state.config);
 
-    // Speicherung in der globalen Variable – Hier werden Feldtypen umgewandelt:
-    loadedData = {
+    // Speicherung im Instanz-State – Hier werden Feldtypen umgewandelt:
+    state.loadedData = {
       forms: data.forms.map((form) => ({
         id: form.id,
         label: form.label,
@@ -548,16 +554,17 @@ async function LoadJSONData() {
     };
   } catch (error) {
     console.error("Fehler beim Laden der Daten:", error);
-    loadedData = null;
+    state.loadedData = null;
   }
 }
 
-function saveCurrentPageData(page, form, root) {
-  if (!formDataStorage[form.id]) {
-    formDataStorage[form.id] = {};
+function saveCurrentPageData(state, page, form) {
+  const root = state.root;
+  if (!state.formDataStorage[form.id]) {
+    state.formDataStorage[form.id] = {};
   }
-  if (!formDataStorage[form.id][page]) {
-    formDataStorage[form.id][page] = {};
+  if (!state.formDataStorage[form.id][page]) {
+    state.formDataStorage[form.id][page] = {};
   }
 
   const pageData = form.pages.find((p) => p.page === page);
@@ -570,7 +577,7 @@ function saveCurrentPageData(page, form, root) {
         'input[name="' + field.name + '"]:checked'
       );
       // Nichts angeklickt -> "" (konsistent mit der "Keine Eingabe"-Logik in collectFormData)
-      formDataStorage[form.id][page][field.id] = checkedRadio
+      state.formDataStorage[form.id][page][field.id] = checkedRadio
         ? checkedRadio.value
         : "";
       return;
@@ -584,12 +591,12 @@ function saveCurrentPageData(page, form, root) {
           if (checkbox && checkbox.checked) selected.push(checkbox.value);
         });
       }
-      formDataStorage[form.id][page][field.id] = selected;
+      state.formDataStorage[form.id][page][field.id] = selected;
       return;
     }
     const fieldElement = root.querySelector("#" + field.id);
     if (fieldElement) {
-      formDataStorage[form.id][page][field.id] =
+      state.formDataStorage[form.id][page][field.id] =
         fieldElement.type === "checkbox"
           ? fieldElement.checked
           : fieldElement.value;
@@ -597,14 +604,15 @@ function saveCurrentPageData(page, form, root) {
   });
 }
 
-function loadPageDataIntoFields(page, form, root) {
-  if (!formDataStorage[form.id] || !formDataStorage[form.id][page]) return;
+function loadPageDataIntoFields(state, page, form) {
+  const root = state.root;
+  if (!state.formDataStorage[form.id] || !state.formDataStorage[form.id][page]) return;
 
   const pageData = form.pages.find((p) => p.page === page);
   if (!pageData) return;
 
   pageData.fields.forEach((field) => {
-    const stored = formDataStorage[form.id][page][field.id];
+    const stored = state.formDataStorage[form.id][page][field.id];
     if (stored === undefined) return;
 
     if (field.type === "ja-nein") {
