@@ -148,6 +148,7 @@ async function app(configData, enclosingHtmlDivElement) {
           saveCurrentPageData(currentPage, form, root);
           currentPage--;
           renderPage(currentPage);
+          loadPageDataIntoFields(currentPage, form, root);
         });
       }
 
@@ -157,6 +158,7 @@ async function app(configData, enclosingHtmlDivElement) {
             saveCurrentPageData(currentPage, form, root);
             currentPage++;
             renderPage(currentPage);
+            loadPageDataIntoFields(currentPage, form, root);
           }
         });
       } else {
