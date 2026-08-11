@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.18.0 - 2026-08-11
+- FIX: Ja/Nein- und Mehrfachauswahl-Antworten vollständig speichern (F-39): `saveCurrentPageData` liest für `ja-nein`-Felder die angeklickte Radio-Antwort („Ja"/„Nein", keine Auswahl → leer) und für `multiselect`-Felder die angeklickten Checkboxen als geordnete Werteliste in Optionen-Reihenfolge; `loadPageDataIntoFields` stellt Radios und Checkboxen aus dem Speicher wieder her; `collectFormData` führt Mehrfachauswahlen mit „, " zusammen, sodass sie vollständig in Bestätigungsseite und Mail-Payload erscheinen
+
 ## 1.17.0 - 2026-08-11
 - FIX: XSS- und URL-Vertrag geschlossen (F-35): `safeHttpUrl` als Top-Level-Helfer ergänzt; der default-Zweig von `generateFieldHTML` rendert kein Eingabefeld mehr, sondern eine harmlose Konfigurationswarnung mit escaptem Feldtyp
 

@@ -291,7 +291,11 @@ async function app(configData, enclosingHtmlDivElement) {
           .find((f) => f.id === fieldId);
 
         if (field) {
-          data[field.label] = value !== "" ? value : "Keine Eingabe";
+          // Mehrfachauswahlen als geordnete Liste in Options-Reihenfolge zusammenfuehren
+          const normalized = Array.isArray(value)
+            ? value.join(", ")
+            : value;
+          data[field.label] = normalized !== "" ? normalized : "Keine Eingabe";
         }
       });
     });
@@ -558,6 +562,29 @@ function saveCurrentPageData(page, form, root) {
   if (!pageData) return;
 
   pageData.fields.forEach((field) => {
+    if (field.type === "ja-nein") {
+      // Radios tragen name="<field.name>" (ohne fo-Praefix, nur field.id ist praefixiert)
+      const checkedRadio = root.querySelector(
+        'input[name="' + field.name + '"]:checked'
+      );
+      // Nichts angeklickt -> "" (konsistent mit der "Keine Eingabe"-Logik in collectFormData)
+      formDataStorage[form.id][page][field.id] = checkedRadio
+        ? checkedRadio.value
+        : "";
+      return;
+    }
+    if (field.type === "multiselect") {
+      // Geordnete Werteliste in Options-Reihenfolge (Option -> Checkbox ueber id <field.id>_<index>)
+      const selected = [];
+      if (field.options && Array.isArray(field.options)) {
+        field.options.forEach((option, index) => {
+          const checkbox = root.querySelector("#" + field.id + "_" + index);
+          if (checkbox && checkbox.checked) selected.push(checkbox.value);
+        });
+      }
+      formDataStorage[form.id][page][field.id] = selected;
+      return;
+    }
     const fieldElement = root.querySelector("#" + field.id);
     if (fieldElement) {
       formDataStorage[form.id][page][field.id] =
@@ -575,15 +602,35 @@ function loadPageDataIntoFields(page, form, root) {
   if (!pageData) return;
 
   pageData.fields.forEach((field) => {
+    const stored = formDataStorage[form.id][page][field.id];
+    if (stored === undefined) return;
+
+    if (field.type === "ja-nein") {
+      const jaRadio = root.querySelector("#" + field.id + "_ja");
+      const neinRadio = root.querySelector("#" + field.id + "_nein");
+      if (stored === "Ja" && jaRadio) jaRadio.checked = true;
+      else if (stored === "Nein" && neinRadio) neinRadio.checked = true;
+      return;
+    }
+
+    if (field.type === "multiselect") {
+      if (!Array.isArray(stored)) return;
+      if (field.options && Array.isArray(field.options)) {
+        field.options.forEach((option, index) => {
+          const checkbox = root.querySelector("#" + field.id + "_" + index);
+          // Vergleich mit dem DOM-value der Checkbox (escapeHtml-kompatibel, da
+          // das value-Attribut im Browser wieder als Klartext vorliegt)
+          if (checkbox) checkbox.checked = stored.includes(checkbox.value);
+        });
+      }
+      return;
+    }
+
     const fieldElement = root.querySelector("#" + field.id);
-    if (
-      fieldElement &&
-      formDataStorage[form.id][page][field.id] !== undefined
-    ) {
-      fieldElement.value = formDataStorage[form.id][page][field.id];
+    if (fieldElement) {
+      fieldElement.value = stored;
       if (fieldElement.type === "checkbox") {
-        fieldElement.checked =
-          formDataStorage[form.id][page][field.id] === "Ja";
+        fieldElement.checked = stored === "Ja";
       }
     }
   });
