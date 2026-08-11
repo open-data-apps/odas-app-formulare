@@ -398,7 +398,7 @@ async function app(configData, enclosingHtmlDivElement) {
         </div>
       </div>`;
       default:
-        return '<div class="alert alert-warning">Unbekannter Feldtyp "' + escapeHtml(String(field.typ || "")) + '" wird übersprungen.</div>';
+        return '<div class="alert alert-warning">Unbekannter Feldtyp "' + escapeHtml(String(field.type || "")) + '" wird übersprungen.</div>';
     }
   }
 }

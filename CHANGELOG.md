@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.20.0 - 2026-08-11
+- FIX: Warnung bei unbekanntem Feldtyp liest das normalisierte `field.type` statt des veralteten `field.typ` und zeigt den unbekannten Typ HTML-escaped an (default-Zweig von `generateFieldHTML`); bei normalisierten Feldern erschien zuvor eine leere Typ-Anzeige
+
 ## 1.19.0 - 2026-08-11
 - FIX: Laufzeitzustand pro App-Instanz isoliert (F-42): Modul-Globale `loadedData`, `formDataStorage` und `currentPage` in ein pro `app()`-Aufruf geschlossenes `state`-Objekt (uid, root, config, loadedData, formDataStorage, currentPage) gezogen; `LoadJSONData(state)` liest Config und schreibt Daten nur noch über die Instanz (kein ambienter Zugriff auf das `configData`-Global aus app-base.js mehr), wodurch mehrere Instanzen unabhängig laden; Speichern/Laden von Seitenwerten läuft über `state.formDataStorage`
 
