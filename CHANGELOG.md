@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.21.0 - 2026-08-12
+- FIX: Formular-Pflichten werden jetzt tatsächlich durchgesetzt (F-48): Einwilligungserklärung, E-Mail bei angekreuzter Kopie-Option und `multiselect`-Pflichtfelder werden in `validatePage` geprüft (der nativen Constraint-Validation ging der `preventDefault()`-Absende-Handler zuvor in die Quere)
+- FIX: Feldtyp `zahl` wird als `type="text"` mit `inputmode="numeric"` gerendert statt des ungültigen `type="zahl"`; die Ziffernprüfung übernimmt `validatePage` (F-53)
+
 ## 1.20.0 - 2026-08-11
 - FIX: Warnung bei unbekanntem Feldtyp liest das normalisierte `field.type` statt des veralteten `field.typ` und zeigt den unbekannten Typ HTML-escaped an (default-Zweig von `generateFieldHTML`); bei normalisierten Feldern erschien zuvor eine leere Typ-Anzeige
 

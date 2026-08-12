@@ -127,7 +127,7 @@ async function app(configData, enclosingHtmlDivElement) {
               )
               .join("")}</ul></div>`;
           }
-          formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="consentCheckbox" required><label class="form-check-label" for="consentCheckbox">${escapeHtml(pageData.consentForm)}</label></div></div>`;
+          formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="fo-consentCheckbox" required><label class="form-check-label" for="fo-consentCheckbox">${escapeHtml(pageData.consentForm)}</label></div></div>`;
           if (pageData.emailcopy === "ja") {
             formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="fo-emailCopyCheckbox"><label class="form-check-label" for="fo-emailCopyCheckbox">Ich möchte eine Kopie per E-Mail erhalten</label></div><div id="emailInputContainer" style="margin-top: 10px;"><label for="fo-emailAddress" class="form-label">E-Mail-Adresse</label><input type="email" class="form-control" id="fo-emailAddress" name="emailAddress" placeholder="Ihre E-Mail-Adresse" required></div></div>`;
           }
@@ -263,16 +263,55 @@ async function app(configData, enclosingHtmlDivElement) {
         return; // Validierung für dieses Feld abgeschlossen
       }
 
+      // multiselect rendert Checkboxen <field.id>_<index>; ein Lookup auf
+      // #<field.id> trifft nichts und liesse ein Pflichtfeld faelschlich als
+      // gueltig durchgehen (F-48).
+      if (field.type === "multiselect") {
+        const listElement = root.querySelector("#" + field.id + "-list");
+        const msError = root.querySelector("#" + field.id + "-error");
+        let etwasGewaehlt = false;
+        if (Array.isArray(field.options)) {
+          field.options.forEach((option, index) => {
+            const checkbox = root.querySelector("#" + field.id + "_" + index);
+            if (checkbox && checkbox.checked) etwasGewaehlt = true;
+          });
+        }
+        if (field.required && !etwasGewaehlt) {
+          if (!msError && listElement) {
+            const errorMsg = document.createElement("div");
+            errorMsg.id = field.id + "-error";
+            errorMsg.className = "invalid-feedback d-block";
+            errorMsg.textContent = "Bitte wählen Sie mindestens eine Option.";
+            listElement.parentNode.appendChild(errorMsg);
+          }
+          valid = false;
+        } else if (msError) {
+          msError.remove();
+        }
+        return;
+      }
+
       // Für alle anderen Feldtypen
       const fieldElement = root.querySelector("#" + field.id);
       const errorElement = root.querySelector("#" + field.id + "-error");
-      if (field.required && fieldElement && !fieldElement.value.trim()) {
+      const rohwert = fieldElement ? fieldElement.value.trim() : "";
+      const fehltPflicht = field.required && fieldElement && rohwert === "";
+      // "zahl" wird als type="text" gerendert; ohne diese Pruefung waere
+      // "abcde" eine gueltige PLZ (F-53).
+      const falscheZahl =
+        field.type === "zahl" &&
+        fieldElement &&
+        rohwert !== "" &&
+        !/^[0-9]+$/.test(rohwert);
+      if (fehltPflicht || falscheZahl) {
         fieldElement.classList.add("is-invalid");
         if (!errorElement) {
           const errorMsg = document.createElement("div");
           errorMsg.id = field.id + "-error";
           errorMsg.className = "invalid-feedback";
-          errorMsg.textContent = "Dieses Feld ist erforderlich.";
+          errorMsg.textContent = falscheZahl
+            ? "Bitte geben Sie nur Ziffern ein."
+            : "Dieses Feld ist erforderlich.";
           fieldElement.parentNode.appendChild(errorMsg);
         }
         valid = false;
@@ -283,6 +322,53 @@ async function app(configData, enclosingHtmlDivElement) {
         }
       }
     });
+
+    /* Pflichten, die keine Eintraege in pageData.fields sind. Sie standen bisher
+     * nur als HTML-required im Markup. Da der Absende-Handler am click-Event
+     * haengt und preventDefault() aufruft, lief die native Constraint-Validation
+     * nie — das Formular liess sich ohne Einwilligung absenden (F-48). */
+    if (pageData && pageData.consentForm) {
+      const consent = root.querySelector("#fo-consentCheckbox");
+      const consentError = root.querySelector("#fo-consent-error");
+      if (consent && !consent.checked) {
+        consent.classList.add("is-invalid");
+        if (!consentError) {
+          const errorMsg = document.createElement("div");
+          errorMsg.id = "fo-consent-error";
+          errorMsg.className = "invalid-feedback d-block";
+          errorMsg.textContent =
+            "Bitte bestätigen Sie die Einwilligungserklärung.";
+          consent.parentNode.appendChild(errorMsg);
+        }
+        valid = false;
+      } else if (consent) {
+        consent.classList.remove("is-invalid");
+        if (consentError) consentError.remove();
+      }
+    }
+
+    const copyCheckbox = root.querySelector("#fo-emailCopyCheckbox");
+    if (copyCheckbox && copyCheckbox.checked) {
+      const emailField = root.querySelector("#fo-emailAddress");
+      const emailError = root.querySelector("#fo-emailAddress-error");
+      const emailWert = emailField ? emailField.value.trim() : "";
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailWert);
+      if (emailField && !emailOk) {
+        emailField.classList.add("is-invalid");
+        if (!emailError) {
+          const errorMsg = document.createElement("div");
+          errorMsg.id = "fo-emailAddress-error";
+          errorMsg.className = "invalid-feedback d-block";
+          errorMsg.textContent =
+            "Bitte geben Sie eine gültige E-Mail-Adresse an.";
+          emailField.parentNode.appendChild(errorMsg);
+        }
+        valid = false;
+      } else if (emailField) {
+        emailField.classList.remove("is-invalid");
+        if (emailError) emailError.remove();
+      }
+    }
 
     return valid;
   }
@@ -316,14 +402,20 @@ async function app(configData, enclosingHtmlDivElement) {
     switch (field.type) {
       case "text":
       case "zahl":
-      case "email":
+      case "email": {
+        // "zahl" ist kein gueltiger HTML-Input-Typ; Browser fallen still auf
+        // "text" zurueck. Explizit abbilden und die Zifferntastatur anfordern,
+        // die Ziffernpruefung macht validatePage (F-53).
+        const inputTyp = field.type === "zahl" ? "text" : field.type;
+        const zahlAttrs =
+          field.type === "zahl" ? ` inputmode="numeric" pattern="[0-9]*"` : "";
         return `
       <div class="form-group row">
         <label for="${escapeHtml(field.id)}" class="col-sm-5 col-form-label">${
           escapeHtml(field.label)
         }:</label>
         <div class="col-sm-7">
-          <input type="${escapeHtml(field.type)}" id="${escapeHtml(field.id)}" name="${
+          <input type="${escapeHtml(inputTyp)}"${zahlAttrs} id="${escapeHtml(field.id)}" name="${
           escapeHtml(field.name)
         }" class="form-control"
             ${field.required ? "required" : ""} ${
@@ -331,6 +423,7 @@ async function app(configData, enclosingHtmlDivElement) {
         }>
         </div>
       </div>`;
+      }
       case "dropdown":
         let options = "";
         if (field.options && Array.isArray(field.options)) {
