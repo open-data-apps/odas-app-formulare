@@ -31,6 +31,14 @@ async function app(configData, enclosingHtmlDivElement) {
   };
   const root = state.root;
   const foUid = state.uid;
+
+  const quelle = String(state.config.apiurl || "").trim();
+  if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
+    state.root.innerHTML =
+      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    return;
+  }
+
   await LoadJSONData(state);
   document.body.classList.remove("register-page");
 
