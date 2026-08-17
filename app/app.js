@@ -256,13 +256,18 @@ async function app(configData, enclosingHtmlDivElement) {
         const radioYes = root.querySelector("#" + field.id + "_ja");
         const radioNo = root.querySelector("#" + field.id + "_nein");
         const errorElement = root.querySelector("#" + field.id + "-error");
-        if (field.required && !radioYes.checked && !radioNo.checked) {
+        // F-62: fail-closed statt ungeschuetzter Dereferenzierung -- ein
+        // fehlendes Radio gilt als "nicht angeklickt" (wie der
+        // multiselect-Zweig), nicht als stillschweigend erfuelltes Pflichtfeld.
+        const istBeantwortet =
+          (radioYes && radioYes.checked) || (radioNo && radioNo.checked);
+        if (field.required && !istBeantwortet) {
           if (!errorElement) {
             const errorMsg = document.createElement("div");
             errorMsg.id = field.id + "-error";
             errorMsg.className = "invalid-feedback d-block";
             errorMsg.textContent = "Dieses Feld ist erforderlich.";
-            radioNo.parentNode.appendChild(errorMsg);
+            radioNo?.parentNode?.appendChild(errorMsg);
           }
           valid = false;
         } else if (errorElement) {
@@ -459,7 +464,7 @@ async function app(configData, enclosingHtmlDivElement) {
         <div class="col-sm-7">
           <div class="form-check form-check-inline" style="margin-right:0.3rem;">
             <input class="form-check-input" type="radio" name="${
-              escapeHtml(field.name)
+              escapeHtml(field.id)
             }" id="${escapeHtml(field.id)}_ja" value="Ja" ${
           field.required ? "required" : ""
         }>
@@ -467,7 +472,7 @@ async function app(configData, enclosingHtmlDivElement) {
           </div>
           <div class="form-check form-check-inline" style="margin-right:0.3rem;">
             <input class="form-check-input" type="radio" name="${
-              escapeHtml(field.name)
+              escapeHtml(field.id)
             }" id="${escapeHtml(field.id)}_nein" value="Nein" ${
           field.required ? "required" : ""
         }>
@@ -635,21 +640,34 @@ async function LoadJSONData(state) {
           consentForm: pageData.einverständniserklärung || "",
           emailcopy: pageData.emailkopie || "",
           fields:
-            pageData.fields?.map((field) => ({
-              id: "fo-" + field.name, // DOM- und Speicher-ID, mit App-Präfix (F-25); Submit-Payload nutzt field.label
-              name: field.name,
-              label: field.label,
-              required: field.pflichtfeld === "ja",
-              // Hier erfolgt die Umwandlung der Typen:
-              type:
-                field.typ === "ja/nein"
-                  ? "ja-nein"
-                  : field.typ === "auswahlliste"
-                  ? "multiselect"
-                  : field.typ,
-              maxLength: field.länge || null,
-              options: field.options || null,
-            })) || [],
+            pageData.fields?.map((field, fieldIndex) => {
+              // F-62: field.name stammt aus der entfernt geladenen Formular-
+              // definition und wurde bislang ungeprueft als DOM-ID/Selektor
+              // genutzt -- ein Feldname mit CSS-Sonderzeichen (Leerzeichen,
+              // ".", ":", Anfuehrungszeichen, ...) liess Selektoren daneben
+              // greifen oder querySelector werfen. Slug reduziert auf
+              // [A-Za-z0-9_-]; Seiten-/Feldindex sichert Eindeutigkeit auch
+              // bei gleichlautenden oder leeren Namen. field.name/field.label
+              // bleiben fuer Anzeige und Payload unveraendert.
+              const slug =
+                String(field.name || "").replace(/[^A-Za-z0-9_-]/g, "_") ||
+                "feld";
+              return {
+                id: "fo-" + slug + "-" + pageNumber + "-" + fieldIndex, // DOM- und Speicher-ID, mit App-Präfix (F-25); Submit-Payload nutzt field.label
+                name: field.name,
+                label: field.label,
+                required: field.pflichtfeld === "ja",
+                // Hier erfolgt die Umwandlung der Typen:
+                type:
+                  field.typ === "ja/nein"
+                    ? "ja-nein"
+                    : field.typ === "auswahlliste"
+                    ? "multiselect"
+                    : field.typ,
+                maxLength: field.länge || null,
+                options: field.options || null,
+              };
+            }) || [],
         })),
       })),
     };
@@ -673,9 +691,10 @@ function saveCurrentPageData(state, page, form) {
 
   pageData.fields.forEach((field) => {
     if (field.type === "ja-nein") {
-      // Radios tragen name="<field.name>" (ohne fo-Praefix, nur field.id ist praefixiert)
+      // Radios tragen name="<field.id>" (F-62: der bereits CSS-sichere Slug,
+      // nicht mehr der ungeprüfte field.name)
       const checkedRadio = root.querySelector(
-        'input[name="' + field.name + '"]:checked'
+        'input[name="' + field.id + '"]:checked'
       );
       // Nichts angeklickt -> "" (konsistent mit der "Keine Eingabe"-Logik in collectFormData)
       state.formDataStorage[form.id][page][field.id] = checkedRadio
