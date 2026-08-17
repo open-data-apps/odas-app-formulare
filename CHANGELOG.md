@@ -1,6 +1,10 @@
 # Changelog
 
 
+## 1.24.0 - 2026-08-17
+- `fetchOdasJson()` wirft jetzt bei nicht-JSON-Antworten (CSV, HTML, leerer Body) eine sprechende Konfigurationsfehlermeldung statt der rohen `JSON.parse`-Parserfehlermeldung (F-66)
+- `urlDaten` zeigte auf den nicht mehr existierenden Host `offenedaten.esslingen.de` (NXDOMAIN); da `apiurl` auf eine mitgelieferte lokale Vorlage verweist und kein externer Datensatz existiert, ist das Feld jetzt geleert und in `app-package.json` als optional (`erforderlich: "nein"`) markiert statt einen falschen Link zu zeigen (F-67)
+
 ## 1.23.0 - 2026-08-17
 - **CHG:** `instanz-config`-`category`-Vokabular auf Deutsch umgestellt (`allgemein`, `beschreibung`, `datenherkunft`, `kontakt-rechtliches`, `sonstiges`); die entfallenen Kategorien `metrics` und `advanced` wurden auf `beschreibung` bzw. `sonstiges` verteilt
 
