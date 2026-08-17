@@ -1,6 +1,9 @@
 # Changelog
 
 
+## 1.25.0 - 2026-08-17
+- Korrektur an Welle X: `urlDaten` war dort fälschlich geleert und optional markiert; `apiurl.beispiel` referenziert tatsächlich einen echten CKAN-Datensatz (`.../dataset/formulare`, live verifiziert) — jetzt wie die anderen Apps mit `{{appconfig.datensatz-url}}`-Platzhalter und wieder als Pflichtfeld; lokale `odas-config/config.json` entsprechend befüllt (F-68)
+
 ## 1.24.0 - 2026-08-17
 - `fetchOdasJson()` wirft jetzt bei nicht-JSON-Antworten (CSV, HTML, leerer Body) eine sprechende Konfigurationsfehlermeldung statt der rohen `JSON.parse`-Parserfehlermeldung (F-66)
 - `urlDaten` zeigte auf den nicht mehr existierenden Host `offenedaten.esslingen.de` (NXDOMAIN); da `apiurl` auf eine mitgelieferte lokale Vorlage verweist und kein externer Datensatz existiert, ist das Feld jetzt geleert und in `app-package.json` als optional (`erforderlich: "nein"`) markiert statt einen falschen Link zu zeigen (F-67)

@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "version": "1.24.0",
+  "version": "1.25.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Die App macht das Erstellen und Verwalten von Formularen kinderleicht. Ob Anträge, Umfragen oder Rückmeldungen – alles digital und unkompliziert.",
@@ -207,13 +207,13 @@
     "urlDaten": {
       "label": "URL zum Datensatz im ODP",
       "category": "datenherkunft",
-      "hilfe": "Der Datensatz im Open Data Portal mit den Daten der Formular App (optional — apiurl verweist auf eine mitgelieferte Vorlage, nicht auf einen externen Datensatz)",
+      "hilfe": "Der Datensatz im Open Data Portal mit den Daten der Formular App",
       "format": {
         "typ": "url"
       },
-      "default": "",
-      "beispiel": "",
-      "erforderlich": "nein"
+      "default": "{{appconfig.datensatz-url}}",
+      "beispiel": "https://open-data-musterstadt.ckan.de/dataset/formulare",
+      "erforderlich": "ja"
     },
     "datenquelleHinweis": {
       "label": "Methodik / Datenquelle-Hinweis",
