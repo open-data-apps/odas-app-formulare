@@ -135,9 +135,9 @@ async function app(configData, enclosingHtmlDivElement) {
               )
               .join("")}</ul></div>`;
           }
-          formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="fo-consentCheckbox" required><label class="form-check-label" for="fo-consentCheckbox">${escapeHtml(pageData.consentForm)}</label></div></div>`;
+          formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="fo-consentCheckbox-${foUid}" required><label class="form-check-label" for="fo-consentCheckbox-${foUid}">${escapeHtml(pageData.consentForm)}</label></div></div>`;
           if (pageData.emailcopy === "ja") {
-            formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="fo-emailCopyCheckbox"><label class="form-check-label" for="fo-emailCopyCheckbox">Ich möchte eine Kopie per E-Mail erhalten</label></div><div id="emailInputContainer" style="margin-top: 10px;"><label for="fo-emailAddress" class="form-label">E-Mail-Adresse</label><input type="email" class="form-control" id="fo-emailAddress" name="emailAddress" placeholder="Ihre E-Mail-Adresse" required></div></div>`;
+            formHTML += `<div class="form-group"><div class="form-check"><input type="checkbox" class="form-check-input" id="fo-emailCopyCheckbox-${foUid}"><label class="form-check-label" for="fo-emailCopyCheckbox-${foUid}">Ich möchte eine Kopie per E-Mail erhalten</label></div><div id="emailInputContainer" style="margin-top: 10px;"><label for="fo-emailAddress-${foUid}" class="form-label">E-Mail-Adresse</label><input type="email" class="form-control" id="fo-emailAddress-${foUid}" name="emailAddress" placeholder="Ihre E-Mail-Adresse" required></div></div>`;
           }
           break;
         default:
@@ -191,10 +191,10 @@ async function app(configData, enclosingHtmlDivElement) {
               const mailUrl = `${getOdasAppBasePath()}/mail`;
               // Payload nur mit emailCC wenn Option angekreuzt
               const payload = { content: summary };
-              const copyCheckbox = root.querySelector("#fo-emailCopyCheckbox");
+              const copyCheckbox = root.querySelector(`#fo-emailCopyCheckbox-${foUid}`);
               if (copyCheckbox && copyCheckbox.checked) {
                 const email =
-                  root.querySelector("#fo-emailAddress")?.value || "";
+                  root.querySelector(`#fo-emailAddress-${foUid}`)?.value || "";
                 payload.emailCC = email;
               }
 
@@ -336,7 +336,7 @@ async function app(configData, enclosingHtmlDivElement) {
      * haengt und preventDefault() aufruft, lief die native Constraint-Validation
      * nie — das Formular liess sich ohne Einwilligung absenden (F-48). */
     if (pageData && pageData.consentForm) {
-      const consent = root.querySelector("#fo-consentCheckbox");
+      const consent = root.querySelector(`#fo-consentCheckbox-${foUid}`);
       const consentError = root.querySelector("#fo-consent-error");
       if (consent && !consent.checked) {
         consent.classList.add("is-invalid");
@@ -355,17 +355,17 @@ async function app(configData, enclosingHtmlDivElement) {
       }
     }
 
-    const copyCheckbox = root.querySelector("#fo-emailCopyCheckbox");
+    const copyCheckbox = root.querySelector(`#fo-emailCopyCheckbox-${foUid}`);
     if (copyCheckbox && copyCheckbox.checked) {
-      const emailField = root.querySelector("#fo-emailAddress");
-      const emailError = root.querySelector("#fo-emailAddress-error");
+      const emailField = root.querySelector(`#fo-emailAddress-${foUid}`);
+      const emailError = root.querySelector(`#fo-emailAddress-error-${foUid}`);
       const emailWert = emailField ? emailField.value.trim() : "";
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailWert);
       if (emailField && !emailOk) {
         emailField.classList.add("is-invalid");
         if (!emailError) {
           const errorMsg = document.createElement("div");
-          errorMsg.id = "fo-emailAddress-error";
+          errorMsg.id = `fo-emailAddress-error-${foUid}`;
           errorMsg.className = "invalid-feedback d-block";
           errorMsg.textContent =
             "Bitte geben Sie eine gültige E-Mail-Adresse an.";
