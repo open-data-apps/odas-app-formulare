@@ -42,9 +42,13 @@ async function app(configData, enclosingHtmlDivElement) {
   await LoadJSONData(state);
   document.body.classList.remove("register-page");
 
-  if (!state.loadedData || !state.loadedData.forms) {
-    console.error("Keine Daten verfügbar");
-    state.root.innerHTML = `<p>Fehler beim Laden der Formulare.</p>`;
+  if (state.loadError) {
+    state.root.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Fehler beim Laden der Formulare:</strong> ${escapeHtml(state.loadError.message || "Unbekannter Fehler")}</div>`;
+    return;
+  }
+
+  if (!state.loadedData || !Array.isArray(state.loadedData.forms) || state.loadedData.forms.length === 0) {
+    state.root.innerHTML = '<div class="alert alert-info" role="alert">Keine Formulare in der Datenquelle gefunden.</div>';
     return;
   }
 
@@ -697,6 +701,7 @@ async function LoadJSONData(state) {
   } catch (error) {
     console.error("Fehler beim Laden der Daten:", error);
     state.loadedData = null;
+    state.loadError = error;
   }
 }
 

@@ -1,6 +1,9 @@
 # Changelog
 
 
+## 1.27.0 - 2026-08-20
+- FIX: Drei-Datenzustände-Kontrakt umgesetzt — fehlende `apiurl` und leere Formularliste zeigen jetzt `alert-info` statt einer generischen Fehlermeldung; Ladefehler (`state.loadError`) zeigen weiterhin `alert-danger` mit der eigentlichen Fehlermeldung (F-69)
+
 ## 1.26.0 - 2026-08-20
 - FIX: `field.id` enthielt keine Instanzkennung (`foUid`) — bei zwei gleichzeitig gemounteten Instanzen mit identischer Formularquelle konnte ein Label-Klick den Fokus in der falschen Instanz auslösen (F-71, Hoch-Teilfall)
 
