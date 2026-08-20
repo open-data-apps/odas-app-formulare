@@ -1,6 +1,9 @@
 # Changelog
 
 
+## 1.28.0 - 2026-08-20
+- Markdown-Metadaten: Paketbeschreibungen auf echtes Markdown umgestellt, exakte Identität Top-Level/Instanz hergestellt, lokale HTML-Fixture semantisch gespiegelt.
+
 ## 1.27.0 - 2026-08-20
 - FIX: Drei-Datenzustände-Kontrakt umgesetzt — fehlende `apiurl` und leere Formularliste zeigen jetzt `alert-info` statt einer generischen Fehlermeldung; Ladefehler (`state.loadError`) zeigen weiterhin `alert-danger` mit der eigentlichen Fehlermeldung (F-69)
 
