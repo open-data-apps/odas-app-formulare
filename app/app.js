@@ -671,7 +671,12 @@ async function LoadJSONData(state) {
                 String(field.name || "").replace(/[^A-Za-z0-9_-]/g, "_") ||
                 "feld";
               return {
-                id: "fo-" + slug + "-" + pageNumber + "-" + fieldIndex, // DOM- und Speicher-ID, mit App-Präfix (F-25); Submit-Payload nutzt field.label
+                // F-71 (Hoch-Teilfall): id muss die Instanz-UID enthalten, sonst
+                // kollidieren bei zwei gleichzeitig gemounteten Instanzen mit
+                // identischer Formularquelle die generierten Feld-IDs -- ein
+                // Label-Klick (<label for=...>) trifft dann ggf. das Feld der
+                // FALSCHEN Instanz, da for= dokumentweit aufgeloest wird.
+                id: "fo-" + slug + "-" + pageNumber + "-" + fieldIndex + "-" + state.uid, // DOM- und Speicher-ID, mit App-Präfix (F-25); Submit-Payload nutzt field.label
                 name: field.name,
                 label: field.label,
                 required: field.pflichtfeld === "ja",

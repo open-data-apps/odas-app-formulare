@@ -1,6 +1,9 @@
 # Changelog
 
 
+## 1.26.0 - 2026-08-20
+- FIX: `field.id` enthielt keine Instanzkennung (`foUid`) — bei zwei gleichzeitig gemounteten Instanzen mit identischer Formularquelle konnte ein Label-Klick den Fokus in der falschen Instanz auslösen (F-71, Hoch-Teilfall)
+
 ## 1.25.0 - 2026-08-17
 - Korrektur an Welle X: `urlDaten` war dort fälschlich geleert und optional markiert; `apiurl.beispiel` referenziert tatsächlich einen echten CKAN-Datensatz (`.../dataset/formulare`, live verifiziert) — jetzt wie die anderen Apps mit `{{appconfig.datensatz-url}}`-Platzhalter und wieder als Pflichtfeld; lokale `odas-config/config.json` entsprechend befüllt (F-68)
 
