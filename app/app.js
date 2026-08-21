@@ -32,7 +32,7 @@ async function app(configData, enclosingHtmlDivElement) {
   const root = state.root;
   const foUid = state.uid;
 
-  const quelle = String(state.config.apiurl || "").trim();
+  const quelle = getOdasApiUrl(state.config, "formular");
   if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
     state.root.innerHTML =
       '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
@@ -620,6 +620,17 @@ async function fetchOdasResource(targetUrl, configdata = {}) {
   }
 }
 
+/**
+ * Löst eine benannte Datenressource aus configdata.apiurls auf.
+ * Neue apiurls-Form (typ: "array"); das frühere skalare apiurl wird nicht mehr gelesen.
+ * @returns {string} getrimmte URL, oder "" für den Zustand "keine Quelle konfiguriert"
+ */
+function getOdasApiUrl(configdata, name) {
+  const liste = Array.isArray(configdata && configdata.apiurls) ? configdata.apiurls : [];
+  const treffer = liste.find((eintrag) => eintrag && eintrag.name === name);
+  return String((treffer && treffer.url) || "").trim();
+}
+
 async function fetchOdasJson(targetUrl, configdata = {}) {
   const rawContent = await fetchOdasResource(targetUrl, configdata);
   try {
@@ -644,7 +655,7 @@ function describeNonJsonPayload(rawContent) {
 
 async function LoadJSONData(state) {
   try {
-    const data = await fetchOdasJson(state.config.apiurl, state.config);
+    const data = await fetchOdasJson(getOdasApiUrl(state.config, "formular"), state.config);
 
     // Speicherung im Instanz-State – Hier werden Feldtypen umgewandelt:
     state.loadedData = {

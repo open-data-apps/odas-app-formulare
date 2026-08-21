@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
   "kurzbeschreibung": "Die App macht das Erstellen und Verwalten von Formularen kinderleicht. Ob Anträge, Umfragen oder Rückmeldungen – alles digital und unkompliziert.",
@@ -15,7 +15,7 @@
     "",
     "## Methodik",
     "",
-    "Die App lädt die konfigurierte JSON-Quelle (`apiurl`) – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und erwartet ein Objekt mit `forms`. Sie bildet Felddefinitionen auf Eingabeelemente ab und berücksichtigt `pflichtfeld` (`ja`/`nein`). Unterstützt werden `text`, `email`, `zahl` (als Text mit numerischer Tastatur), `dropdown`, `ja-nein` (Radio) und `auswahlliste`/`multiselect` (Checkboxen); unbekannte Typen zeigen eine Konfigurationswarnung.",
+    "Die App lädt die konfigurierte JSON-Quelle (`apiurls.formular`) – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und erwartet ein Objekt mit `forms`. Sie bildet Felddefinitionen auf Eingabeelemente ab und berücksichtigt `pflichtfeld` (`ja`/`nein`). Unterstützt werden `text`, `email`, `zahl` (als Text mit numerischer Tastatur), `dropdown`, `ja-nein` (Radio) und `auswahlliste`/`multiselect` (Checkboxen); unbekannte Typen zeigen eine Konfigurationswarnung.",
     "",
     "Vor dem Seitenwechsel validiert die App Pflichtfelder je Seite: `ja-nein` erfordert eine Auswahl, `multiselect` mindestens eine Option, `zahl` nur Ziffern (`^[0-9]+$`) und leere Pflichtfelder werden markiert. Auf Bestätigungsseiten prüft sie die Einwilligungserklärung (`einverständniserklärung`) und – falls `emailkopie: ja` aktiviert ist und die Kopie angekreuzt wurde – eine gültige E-Mail-Adresse; sonst bleibt die Eingabe auf der Seite und ein Hinweis wird angezeigt.",
     "",
@@ -129,7 +129,7 @@
         "",
         "## Methodik",
         "",
-        "Die App lädt die konfigurierte JSON-Quelle (`apiurl`) – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und erwartet ein Objekt mit `forms`. Sie bildet Felddefinitionen auf Eingabeelemente ab und berücksichtigt `pflichtfeld` (`ja`/`nein`). Unterstützt werden `text`, `email`, `zahl` (als Text mit numerischer Tastatur), `dropdown`, `ja-nein` (Radio) und `auswahlliste`/`multiselect` (Checkboxen); unbekannte Typen zeigen eine Konfigurationswarnung.",
+        "Die App lädt die konfigurierte JSON-Quelle (`apiurls.formular`) – im Live-Betrieb optional über den ODAS-Proxy (`proxyAktiv`), sonst direkt – und erwartet ein Objekt mit `forms`. Sie bildet Felddefinitionen auf Eingabeelemente ab und berücksichtigt `pflichtfeld` (`ja`/`nein`). Unterstützt werden `text`, `email`, `zahl` (als Text mit numerischer Tastatur), `dropdown`, `ja-nein` (Radio) und `auswahlliste`/`multiselect` (Checkboxen); unbekannte Typen zeigen eine Konfigurationswarnung.",
         "",
         "Vor dem Seitenwechsel validiert die App Pflichtfelder je Seite: `ja-nein` erfordert eine Auswahl, `multiselect` mindestens eine Option, `zahl` nur Ziffern (`^[0-9]+$`) und leere Pflichtfelder werden markiert. Auf Bestätigungsseiten prüft sie die Einwilligungserklärung (`einverständniserklärung`) und – falls `emailkopie: ja` aktiviert ist und die Kopie angekreuzt wurde – eine gültige E-Mail-Adresse; sonst bleibt die Eingabe auf der Seite und ein Hinweis wird angezeigt.",
         "",
@@ -232,17 +232,24 @@
       },
       "erforderlich": "ja"
     },
-    "apiurl": {
-      "label": "URL zu den Daten",
+    "apiurls": {
+      "label": "URLs zu Datenressourcen",
       "category": "datenherkunft",
-      "hilfe": "Von dieser URL werden die Ressoucen bezogen (JSON)",
+      "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle(n). Mehrere Einträge möglich.",
+      "typ": "array",
       "format": {
         "typ": "url",
-        "laenge": 255
+        "laenge": 500
       },
-      "default": "{{appconfig.datensatz-apiurl}}",
-      "beispiel": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
-      "erforderlich": "ja"
+      "urls": [
+        {
+          "name": "formular",
+          "label": "URL zu den Daten",
+          "default": "{{appconfig.datensatz-apiurl}}",
+          "beispiel": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
+          "erforderlich": "ja"
+        }
+      ]
     },
     "sprache": {
       "label": "Sprache der App",

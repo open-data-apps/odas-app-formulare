@@ -9,13 +9,13 @@
     "<p>Die Formular-App stellt digitale Formulare übersichtlich bereit und macht Rückmeldungen, Anträge oder einfache Eingaben leichter zugänglich.</p>",
     "<p>Formularvorlagen können konfiguriert und in einer einheitlichen Oberfläche genutzt werden.</p>",
     "<h2>Methodik</h2>",
-    "<p>Die App lädt die konfigurierte JSON-Quelle (<code>apiurl</code>) – im Live-Betrieb optional über den ODAS-Proxy (<code>proxyAktiv</code>), sonst direkt – und erwartet ein Objekt mit <code>forms</code>. Sie bildet Felddefinitionen auf Eingabeelemente ab und berücksichtigt <code>pflichtfeld</code> (<code>ja</code>/<code>nein</code>). Unterstützt werden <code>text</code>, <code>email</code>, <code>zahl</code> (als Text mit numerischer Tastatur), <code>dropdown</code>, <code>ja-nein</code> (Radio) und <code>auswahlliste</code>/<code>multiselect</code> (Checkboxen); unbekannte Typen zeigen eine Konfigurationswarnung.</p>",
+    "<p>Die App lädt die konfigurierte JSON-Quelle (<code>apiurls.formular</code>) – im Live-Betrieb optional über den ODAS-Proxy (<code>proxyAktiv</code>), sonst direkt – und erwartet ein Objekt mit <code>forms</code>. Sie bildet Felddefinitionen auf Eingabeelemente ab und berücksichtigt <code>pflichtfeld</code> (<code>ja</code>/<code>nein</code>). Unterstützt werden <code>text</code>, <code>email</code>, <code>zahl</code> (als Text mit numerischer Tastatur), <code>dropdown</code>, <code>ja-nein</code> (Radio) und <code>auswahlliste</code>/<code>multiselect</code> (Checkboxen); unbekannte Typen zeigen eine Konfigurationswarnung.</p>",
     "<p>Vor dem Seitenwechsel validiert die App Pflichtfelder je Seite: <code>ja-nein</code> erfordert eine Auswahl, <code>multiselect</code> mindestens eine Option, <code>zahl</code> nur Ziffern (<code>^[0-9]+$</code>) und leere Pflichtfelder werden markiert. Auf Bestätigungsseiten prüft sie die Einwilligungserklärung (<code>einverständniserklärung</code>) und – falls <code>emailkopie: ja</code> aktiviert ist und die Kopie angekreuzt wurde – eine gültige E-Mail-Adresse; sonst bleibt die Eingabe auf der Seite und ein Hinweis wird angezeigt.</p>",
     "<p>Beim Absenden sammelt die App Bezeichnungen (<code>label</code>) und Werte, führt Mehrfachauswahlen mit <code>, </code> zusammen und sendet <code>content</code> (Bezeichnungen und Werte zeilenweise) sowie optional <code>emailCC</code> (bei angekreuzter Kopie) per <code>POST</code> an den ODAS-Endpunkt <code>/mail</code> (<code>getOdasAppBasePath()/mail</code>). Bei nicht erfolgreichem HTTP-Status bleibt das Formular mit allen Eingaben erhalten, der Absende-Button wird wieder freigegeben und eine Fehlermeldung wird angezeigt; erst bei erfolgreichem HTTP-Status erscheint die Bestätigungsseite.</p>",
     "<p>Das Absenden benötigt den ODAS-Maildienst; im eigenständigen Betrieb ohne ODAS kann der Versand fehlschlagen (z.&nbsp;B. 404 auf <code>/mail</code>). Eine erfolgreiche HTTP-Antwort bedeutet nicht automatisch, dass die Nachricht zugestellt, dauerhaft gespeichert oder außerhalb des ODAS-Backends weiterverarbeitet wurde. Empfänger, Zustellweg und Speicherung werden vollständig vom ODAS-Backend bestimmt.</p>",
     "<p>Welche Felder und wie viele Formulare angezeigt werden und wie aktuell sie sind, hängt von der konfigurierten Formular-Ressource ab.</p>",
     "<h2>Datenquelle</h2>",
-    "<p>Die Formular-Definitionen werden aus einer konfigurierten JSON-Ressource geladen; die konkrete Ressource wird über die App-Konfiguration (<code>apiurl</code>) festgelegt. Lokal ist <code>../odas-config/formular_multiTemplate.json</code> als Beispiel konfiguriert.</p>",
+    "<p>Die Formular-Definitionen werden aus einer konfigurierten JSON-Ressource geladen; die konkrete Ressource wird über die App-Konfiguration (<code>apiurls.formular</code>) festgelegt. Lokal ist <code>../odas-config/formular_multiTemplate.json</code> als Beispiel konfiguriert.</p>",
     "<ul><li><strong>Lokale Beispiel-Ressource:</strong> <code>../odas-config/formular_multiTemplate.json</code> (mitgelieferte Vorlagen, kein öffentlicher Datensatz)</li><li><strong>Konfigurierte Ressource (Live):</strong> Platzhalter <code>{{appconfig.datensatz-apiurl}}</code> – im ODAS-Betrieb die tatsächliche Formular-Ressource</li><li><strong>Open Data Portal (Platzhalter):</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li></ul>",
     "<p>Angezeigt werden die in der Quelle vorhandenen Formular-Definitionen; Verfügbarkeit und Aktualität hängen vom Pflegestand der Quelle ab. Die mitgelieferte JSON ist ein frei erfundenes Beispiel für lokale Tests und wird nicht als Produktions-Fallback verwendet.</p>",
     "<h2>Open Data App</h2>",
@@ -31,7 +31,13 @@
   ],
   "urlDaten": "https://open-data-musterstadt.ckan.de/dataset/formulare",
   "fusszeile": "(C) Copyright 2025 | Inhalt: Stadt Esslingen | App: Ondics GmbH | Provided by: Ondics GmbH",
-  "apiurl": "../odas-config/formular_multiTemplate.json",
+  "apiurls": [
+    {
+      "name": "formular",
+      "label": "URL zu den Daten",
+      "url": "../odas-config/formular_multiTemplate.json"
+    }
+  ],
   "sprache": "de",
   "datenquelleHinweis": "<p>Die Formular-App lädt Formular-Definitionen aus der konfigurierten JSON-Ressource und erzeugt daraus Eingabemasken im Browser. Welche Felder angezeigt werden und welche Daten abgefragt werden, hängt vollständig von der Formular-Konfiguration der jeweiligen Instanz ab.</p>",
   "datenStand": "Stand: abhängig von der konfigurierten Formular-Ressource",
