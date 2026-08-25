@@ -15,8 +15,8 @@
     "<p>Das Absenden benötigt den ODAS-Maildienst; im eigenständigen Betrieb ohne ODAS kann der Versand fehlschlagen (z.&nbsp;B. 404 auf <code>/mail</code>). Eine erfolgreiche HTTP-Antwort bedeutet nicht automatisch, dass die Nachricht zugestellt, dauerhaft gespeichert oder außerhalb des ODAS-Backends weiterverarbeitet wurde. Empfänger, Zustellweg und Speicherung werden vollständig vom ODAS-Backend bestimmt.</p>",
     "<p>Welche Felder und wie viele Formulare angezeigt werden und wie aktuell sie sind, hängt von der konfigurierten Formular-Ressource ab.</p>",
     "<h2>Datenquelle</h2>",
-    "<p>Die Formular-Definitionen werden aus einer konfigurierten JSON-Ressource geladen; die konkrete Ressource wird über die App-Konfiguration (<code>apiurls.formular</code>) festgelegt. Lokal ist <code>../odas-config/formular_multiTemplate.json</code> als Beispiel konfiguriert.</p>",
-    "<ul><li><strong>Lokale Beispiel-Ressource:</strong> <code>../odas-config/formular_multiTemplate.json</code> (mitgelieferte Vorlagen, kein öffentlicher Datensatz)</li><li><strong>Konfigurierte Ressource (Live):</strong> Platzhalter <code>{{appconfig.datensatz-apiurl}}</code> – im ODAS-Betrieb die tatsächliche Formular-Ressource</li><li><strong>Open Data Portal (Platzhalter):</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li></ul>",
+    "<p>Die Formular-Definitionen werden aus einer konfigurierten JSON-Ressource geladen; die konkrete Ressource wird über die App-Konfiguration (<code>apiurls.formular</code>) festgelegt. Lokal ist <code>../assets/formular_multiTemplate.json</code> als Beispiel konfiguriert.</p>",
+    "<ul><li><strong>Lokale Beispiel-Ressource:</strong> <code>../assets/formular_multiTemplate.json</code> (mitgelieferte Vorlagen, kein öffentlicher Datensatz)</li><li><strong>Konfigurierte Ressource (Live):</strong> Platzhalter <code>{{appconfig.datensatz-apiurl}}</code> – im ODAS-Betrieb die tatsächliche Formular-Ressource</li><li><strong>Open Data Portal (Platzhalter):</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li></ul>",
     "<p>Angezeigt werden die in der Quelle vorhandenen Formular-Definitionen; Verfügbarkeit und Aktualität hängen vom Pflegestand der Quelle ab. Die mitgelieferte JSON ist ein frei erfundenes Beispiel für lokale Tests und wird nicht als Produktions-Fallback verwendet.</p>",
     "<h2>Open Data App</h2>",
     "<p>Diese App ist eine Open Data App und kann im <a href=\"https://open-data-app-store.de/\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a> betrieben werden. Sie ist Open Source und lässt sich mit eigenen Formular-Definitionen betreiben.</p>",
@@ -35,7 +35,7 @@
     {
       "name": "formular",
       "label": "URL zu den Daten",
-      "url": "../odas-config/formular_multiTemplate.json"
+      "url": "../assets/formular_multiTemplate.json"
     }
   ],
   "sprache": "de",

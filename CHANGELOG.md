@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.32.0 - 2026-08-25
+- **FIX:** `formular_multiTemplate.json` von `odas-config/` nach `assets/` verschoben (liegt damit im Liefer-ZIP); `apiurls.formular` zeigt auf `../assets/formular_multiTemplate.json` – Standard „Eine Quelle = eine vollständige URL“, R5.
+
 ## 1.31.0 - 2026-08-22
 - **CHG:** `api-version` im Paket vor `instanz-config` verschoben (Template-Reihenfolge, keine Inhaltsänderung).
 

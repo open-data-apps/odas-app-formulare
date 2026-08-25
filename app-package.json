@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "app-version": "1.31.0",
+  "app-version": "1.32.0",
   "app-package-version": "2",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
@@ -237,7 +237,7 @@
     "apiurls": {
       "label": "URLs zu Datenressourcen",
       "category": "datenherkunft",
-      "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle(n). Mehrere Einträge möglich.",
+      "hilfe": "Vollständige URL der Formular-Definitionen; gebündelte Beispiel-Vorlage: ../assets/formular_multiTemplate.json.",
       "typ": "array",
       "format": {
         "typ": "url",
@@ -247,8 +247,8 @@
         {
           "name": "formular",
           "label": "URL zu den Daten",
-          "default": "{{appconfig.datensatz-apiurl}}",
-          "beispiel": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
+          "default": "../assets/formular_multiTemplate.json",
+          "beispiel": "../assets/formular_multiTemplate.json",
           "erforderlich": "ja"
         }
       ]
