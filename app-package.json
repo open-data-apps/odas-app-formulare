@@ -31,8 +31,8 @@
     "Die Formular-Definitionen werden aus einer konfigurierten JSON-Ressource über das Open-Data-Portal bereitgestellt; die konkrete Ressource wird über die App-Konfiguration festgelegt.",
     "",
     "- **Open Data Portal:** [{{odp.name}}]({{odp.url}})",
-    "- **Ressource/API-Endpunkt:** [Konfigurierte Formular-Ressource]({{appconfig.datensatz-apiurl}})",
-    "- **Datensatz:** [{{odp.name}}]({{appconfig.datensatz-url}})",
+    "- **Ressource/API-Endpunkt:** [Konfigurierte Formular-Ressource]({{{appinstanz.apiurls.1}}})",
+    "- **Datensatz:** [{{odp.name}}](https://open-data-musterstadt.ckan.de/dataset/formulare)",
     "",
     "Angezeigt werden die in der Quelle vorhandenen Formular-Definitionen; Verfügbarkeit und Aktualität hängen vom Pflegestand der Quelle ab.",
     "",
@@ -146,8 +146,8 @@
         "Die Formular-Definitionen werden aus einer konfigurierten JSON-Ressource über das Open-Data-Portal bereitgestellt; die konkrete Ressource wird über die App-Konfiguration festgelegt.",
         "",
         "- **Open Data Portal:** [{{odp.name}}]({{odp.url}})",
-        "- **Ressource/API-Endpunkt:** [Konfigurierte Formular-Ressource]({{appconfig.datensatz-apiurl}})",
-        "- **Datensatz:** [{{odp.name}}]({{appconfig.datensatz-url}})",
+        "- **Ressource/API-Endpunkt:** [Konfigurierte Formular-Ressource]({{{appinstanz.apiurls.1}}})",
+        "- **Datensatz:** [{{odp.name}}](https://open-data-musterstadt.ckan.de/dataset/formulare)",
         "",
         "Angezeigt werden die in der Quelle vorhandenen Formular-Definitionen; Verfügbarkeit und Aktualität hängen vom Pflegestand der Quelle ab.",
         "",
@@ -273,7 +273,7 @@
       "format": {
         "typ": "url"
       },
-      "default": "{{appconfig.datensatz-url}}",
+      "default": "https://open-data-musterstadt.ckan.de/dataset/formulare",
       "beispiel": "https://open-data-musterstadt.ckan.de/dataset/formulare",
       "erforderlich": "ja"
     },
@@ -305,7 +305,7 @@
       "format": {
         "typ": "markdown"
       },
-      "default": "- [{{odp.name}}]({{odp.url}})\n- [Konfigurierte Formular-Ressource]({{appconfig.datensatz-apiurl}})\n- [Open Data App Store](https://open-data-app-store.de)",
+      "default": "- [{{odp.name}}]({{odp.url}})\n- [Konfigurierte Formular-Ressource]({{{appinstanz.apiurls.1}}})\n- [Open Data App Store](https://open-data-app-store.de)",
       "erforderlich": "nein"
     },
     "brandingCSS": {

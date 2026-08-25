@@ -16,7 +16,7 @@
     "<p>Welche Felder und wie viele Formulare angezeigt werden und wie aktuell sie sind, hängt von der konfigurierten Formular-Ressource ab.</p>",
     "<h2>Datenquelle</h2>",
     "<p>Die Formular-Definitionen werden aus einer konfigurierten JSON-Ressource geladen; die konkrete Ressource wird über die App-Konfiguration (<code>apiurls.formular</code>) festgelegt. Lokal ist <code>../assets/formular_multiTemplate.json</code> als Beispiel konfiguriert.</p>",
-    "<ul><li><strong>Lokale Beispiel-Ressource:</strong> <code>../assets/formular_multiTemplate.json</code> (mitgelieferte Vorlagen, kein öffentlicher Datensatz)</li><li><strong>Konfigurierte Ressource (Live):</strong> Platzhalter <code>{{appconfig.datensatz-apiurl}}</code> – im ODAS-Betrieb die tatsächliche Formular-Ressource</li><li><strong>Open Data Portal (Platzhalter):</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li></ul>",
+    "<ul><li><strong>Lokale Beispiel-Ressource:</strong> <code>../assets/formular_multiTemplate.json</code> (mitgelieferte Vorlagen, kein öffentlicher Datensatz)</li><li><strong>Konfigurierte Ressource (Live):</strong> im ODAS-Betrieb die über die Instanzkonfiguration gebuchte Formular-Ressource</li><li><strong>Open Data Portal (Platzhalter):</strong> <a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li></ul>",
     "<p>Angezeigt werden die in der Quelle vorhandenen Formular-Definitionen; Verfügbarkeit und Aktualität hängen vom Pflegestand der Quelle ab. Die mitgelieferte JSON ist ein frei erfundenes Beispiel für lokale Tests und wird nicht als Produktions-Fallback verwendet.</p>",
     "<h2>Open Data App</h2>",
     "<p>Diese App ist eine Open Data App und kann im <a href=\"https://open-data-app-store.de/\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a> betrieben werden. Sie ist Open Source und lässt sich mit eigenen Formular-Definitionen betreiben.</p>",
@@ -41,5 +41,5 @@
   "sprache": "de",
   "datenquelleHinweis": "<p>Die Formular-App lädt Formular-Definitionen aus der konfigurierten JSON-Ressource und erzeugt daraus Eingabemasken im Browser. Welche Felder angezeigt werden und welche Daten abgefragt werden, hängt vollständig von der Formular-Konfiguration der jeweiligen Instanz ab.</p>",
   "datenStand": "Stand: abhängig von der konfigurierten Formular-Ressource",
-  "weiterfuehrendeLinks": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{appconfig.datensatz-apiurl}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>"
+  "weiterfuehrendeLinks": "<ul><li><a href=\"{{odp.url}}\" target=\"_blank\" rel=\"noopener\">{{odp.name}}</a></li><li><a href=\"{{{appinstanz.apiurls.1}}}\" target=\"_blank\" rel=\"noopener\">Konfigurierte Formular-Ressource</a></li><li><a href=\"https://open-data-app-store.de\" target=\"_blank\" rel=\"noopener\">Open Data App Store</a></li></ul>"
 }
