@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "app-version": "1.34.0",
+  "app-version": "1.35.0",
   "app-package-version": "2",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
@@ -247,8 +247,8 @@
         {
           "name": "formular",
           "label": "URL zu den Daten",
-          "default": "../assets/formular_multiTemplate.json",
-          "beispiel": "../assets/formular_multiTemplate.json",
+          "default": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
+          "beispiel": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
           "erforderlich": "ja"
         }
       ]

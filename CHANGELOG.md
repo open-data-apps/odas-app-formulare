@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.35.0 - 2026-08-27
+- **CHG:** `apiurls.formular` Default+Beispiel auf Musterstadt-Ressource `https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json` (vorher `../assets/...`), `urlDaten` bleibt `https://.../dataset/formulare` – Reset liefert jetzt live-fähige Daten.
+
 ## 1.34.0 - 2026-08-25
 - **CHG:** Datensatz-Link in der Beschreibung nutzt den neuen Shortcode `{{{appinstanz.urlDaten}}}` und zeigt damit auf den tatsächlich gebuchten Datensatz statt auf eine feste Beispiel-URL.
 

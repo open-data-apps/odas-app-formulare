@@ -35,7 +35,7 @@
     {
       "name": "formular",
       "label": "URL zu den Daten",
-      "url": "../assets/formular_multiTemplate.json"
+      "url": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json"
     }
   ],
   "sprache": "de",
