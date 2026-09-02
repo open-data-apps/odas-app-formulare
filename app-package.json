@@ -223,7 +223,7 @@
     "proxyAktiv": {
       "label": "ODAS-Proxy aktivieren",
       "category": "datenherkunft",
-      "hilfe": "Mit ja werden Datenabrufe über den ODAS-Proxy gesendet. Der Proxy ist nur im ODAS-Live-System verfügbar; Entwicklung und Standalone verwenden nein.",
+      "hilfe": "Mit ja läuft der Datenabruf über den ODAS-Proxy /odp-data (nur im ODAS-Live-System, nur freigegebene Quellen – Origin-Allowlist). Mit nein direkt im Browser (braucht CORS der Quelle). Lokal immer nein testen.",
       "default": "nein",
       "format": {
         "typ": "dropdown",
@@ -237,7 +237,7 @@
     "apiurls": {
       "label": "URLs zu Datenressourcen",
       "category": "datenherkunft",
-      "hilfe": "Vollständige URL der Formular-Definitionen; gebündelte Beispiel-Vorlage: ../assets/formular_multiTemplate.json.",
+      "hilfe": "Diese App benötigt einen „Datei-Download“ (direkter Link auf eine Datei im Portal, z. B. CSV/JSON). Öffnen Sie die Datei und kopieren Sie den „Download“-Link. Kein API-Link mit „resource_id“. Beispiel: https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json. Diese App funktioniert nur mit diesem Typ.",
       "typ": "array",
       "format": {
         "typ": "url",
@@ -246,7 +246,7 @@
       "urls": [
         {
           "name": "formular",
-          "label": "URL zu den Daten",
+          "label": "Datei-Download – Formulare (oder ../assets/…)",
           "default": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
           "beispiel": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json",
           "erforderlich": "ja"
@@ -269,7 +269,7 @@
     "urlDaten": {
       "label": "URL zum Datensatz im ODP",
       "category": "datenherkunft",
-      "hilfe": "Der Datensatz im Open Data Portal mit den Daten der Formular App",
+      "hilfe": "Link zur Beschreibungsseite des Datensatzes im Open-Data-Portal (…/dataset/… oder Portal-Start) – nicht der API-Endpunkt. Wird in der App unter „Über diese App → Datenquelle“ verlinkt.",
       "format": {
         "typ": "url"
       },
@@ -280,7 +280,7 @@
     "datenquelleHinweis": {
       "label": "Methodik / Datenquelle-Hinweis",
       "category": "beschreibung",
-      "hilfe": "Herkunft, Erhebungsmethode, Limitierungen (Markdown/HTML). Leer = ausgeblendet.",
+      "hilfe": "Herkunft, Erhebungsmethode, Zeitbezug und Limitierungen (Markdown/HTML). Leer = Hinweis-Box ausgeblendet. Beispiel: „Erhebung: Stadt Dortmund, Methode: Melderegister, Stand: 2024, Limit: nur freigegebene Daten“.",
       "format": {
         "typ": "markdown"
       },
@@ -301,7 +301,7 @@
     "weiterfuehrendeLinks": {
       "label": "Weiterführende Links",
       "category": "beschreibung",
-      "hilfe": "Verwandte Datensätze / Hintergrundquellen (Markdown/HTML). Leer = ausgeblendet.",
+      "hilfe": "Links zu verwandten Datensätzen/Hintergrundquellen (Markdown/HTML). Leer = Abschnitt ausgeblendet.",
       "format": {
         "typ": "markdown"
       },
