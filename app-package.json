@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "formular",
   "name": "Formular",
-  "app-version": "1.35.0",
+  "app-version": "1.35.1",
   "app-package-version": "2",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "assets/odas-app-icon.svg",
@@ -334,7 +334,7 @@
   "daten": {
     "beschreibung": "Die Formular-App verarbeitet konfigurierbare Open-Data-Ressourcen aus dem Open Data Portal (z.B. JSON- oder CSV-Endpunkte).",
     "schema": "assets/schema.json",
-    "beispiel": "",
-    "beispiel-url": ""
+    "beispiel": "Formular-JSON mit forms[] (Einträge mit id, label, titel, beschreibung, pages-Objekt) — Schema beschreibt die Formular-Einträge. Gebündelte Demo-Vorlage zusätzlich in assets/formular_multiTemplate.json.",
+    "beispiel-url": "https://open-data-musterstadt.ckan.de/dataset/8e798e62-1613-4975-b3b1-f57e1ff25371/resource/6d202584-eace-4153-be5a-db92da8e40f9/download/formular_multitemplate.json"
   }
 }
