@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.35.1 - 2026-09-07
+- **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ckan-dl) vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.35.1 -> 1.35.2).
 - **FIX:** Frictionless-Härtung: `daten.beispiel`/`beispiel-url` befüllt. Remote-Default bleibt (200 + code-kompatibel; 08-25-Assets-Verschiebung nicht nötig, gebündelte Vorlage bleibt Demo-Fallback — Abweichung begründet).
 
 ## 1.35.0 - 2026-08-27

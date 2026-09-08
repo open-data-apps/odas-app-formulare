@@ -34,8 +34,23 @@ async function app(configData, enclosingHtmlDivElement) {
 
   const quelle = getOdasApiUrl(state.config, "formular");
   if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
-    state.root.innerHTML =
-      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    renderOdasFehler(state.root, new Error("Keine Datenquelle konfiguriert."), {
+      url: quelle,
+      label: "Formular-Ressource",
+      typLabel: "Datei-Download",
+      erwarteterTyp: "ckan-dl",
+    });
+    return;
+  }
+  // Variante A (F-92): Typprüfung vor dem ersten Fetch.
+  const foTypWarn = validateUrlTypErwartung(quelle, "ckan-dl");
+  if (foTypWarn) {
+    renderOdasFehler(state.root, new Error(foTypWarn), {
+      url: quelle,
+      label: "Formular-Ressource",
+      typLabel: "Datei-Download",
+      erwarteterTyp: "ckan-dl",
+    });
     return;
   }
 
@@ -43,7 +58,12 @@ async function app(configData, enclosingHtmlDivElement) {
   document.body.classList.remove("register-page");
 
   if (state.loadError) {
-    state.root.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Fehler beim Laden der Formulare:</strong> ${escapeHtml(state.loadError.message || "Unbekannter Fehler")}</div>`;
+    renderOdasFehler(state.root, state.loadError, {
+      url: quelle,
+      label: "Formular-Ressource",
+      typLabel: "Datei-Download",
+      erwarteterTyp: "ckan-dl",
+    });
     return;
   }
 
