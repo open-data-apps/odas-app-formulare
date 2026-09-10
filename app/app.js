@@ -16,7 +16,27 @@ function safeHttpUrl(value) {
   const s = String(value || "").trim();
   return /^https?:\/\//i.test(s) ? s : "";
 }
+
+// Client-seitiges Timeout fuer den Absende-POST an /mail (FO-B2): ohne das
+// blieb der Absende-Button bei haengendem Backend dauerhaft gesperrt.
+const MAIL_REQUEST_TIMEOUT_MS = 30000;
+
 let foInstanzZaehler = 0;
+
+// FO-B1: Instanz-Registry je Container. Die App hatte zwar ein `disposed`-Flag,
+// aber weder `onPageLeave` noch eine Stelle, die es setzt oder liest.
+const foCleanups = new Map();
+
+function onPageLeave() {
+  foCleanups.forEach(function (cleanup) {
+    try {
+      cleanup();
+    } catch (error) {
+      console.warn("Fehler beim Abraeumen der Formular-Instanz:", error);
+    }
+  });
+  foCleanups.clear();
+}
 
 async function app(configData, enclosingHtmlDivElement) {
   // F-42: pro Instanz geschlossener State (Closure in app())
@@ -24,13 +44,32 @@ async function app(configData, enclosingHtmlDivElement) {
     uid: "i" + ++foInstanzZaehler,
     root: enclosingHtmlDivElement,
     config: configData,
-    disposed: false, // wird in Task 9 (onPageLeave) gesetzt
+    disposed: false, // FO-B1: wird im Teardown gesetzt und vor DOM-Schreibern geprueft
     loadedData: null,
+    loadError: null,
     formDataStorage: {},
     currentPage: 1,
+    controller: new AbortController(),
+    mailTimeoutId: null,
   };
   const root = state.root;
   const foUid = state.uid;
+
+  // FO-B1: Teardown synchron registrieren — vor jedem await und jedem Fetch.
+  const foVorheriger = foCleanups.get(enclosingHtmlDivElement);
+  if (foVorheriger) {
+    try {
+      foVorheriger();
+    } catch (_e) {}
+  }
+  foCleanups.set(enclosingHtmlDivElement, function () {
+    state.disposed = true;
+    state.controller.abort();
+    if (state.mailTimeoutId) {
+      clearTimeout(state.mailTimeoutId);
+      state.mailTimeoutId = null;
+    }
+  });
 
   const quelle = getOdasApiUrl(state.config, "formular");
   if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
@@ -55,7 +94,8 @@ async function app(configData, enclosingHtmlDivElement) {
   }
 
   await LoadJSONData(state);
-  document.body.classList.remove("register-page");
+  // FO-B1: Nach dem Seitenwechsel nichts mehr in den dann fremden Container schreiben.
+  if (state.disposed) return;
 
   if (state.loadError) {
     renderOdasFehler(state.root, state.loadError, {
@@ -96,12 +136,12 @@ async function app(configData, enclosingHtmlDivElement) {
   const url = new URL(urlString);
   const formParam = url.searchParams.get("form");
 
-  if (formParam) {
-    const selectedForm = state.loadedData.forms.find((form) => form.id === formParam);
-    if (selectedForm) {
-      loadDynamicForm(selectedForm);
-    }
-  }
+  // FO-B5: Auswahlliste immer aufbauen (sonst haette der Zur"uck"-Knopf nach
+  // einem Direktaufruf mit ?form= keine Liste), und loadDynamicForm nur EINMAL
+  // aufrufen — vorher lief es bei ?form= und genau einem Formular doppelt.
+  const selectedForm = formParam
+    ? state.loadedData.forms.find((form) => form.id === formParam)
+    : null;
 
   if (state.loadedData.forms.length === 1) {
     loadDynamicForm(state.loadedData.forms[0]);
@@ -123,6 +163,10 @@ async function app(configData, enclosingHtmlDivElement) {
     });
 
     formListContainer.appendChild(formList);
+
+    if (selectedForm) {
+      loadDynamicForm(selectedForm);
+    }
   }
 
   function loadDynamicForm(form) {
@@ -228,21 +272,57 @@ async function app(configData, enclosingHtmlDivElement) {
               if (statusContainer) statusContainer.innerHTML = "";
               if (submitButton) submitButton.disabled = true;
 
+              // FO-B2: Timeout fuer den Absende-POST — ohne das blieb der
+              // Button bei nicht antwortendem Backend dauerhaft gesperrt.
+              const mailController = new AbortController();
+              const mailTimeoutId = setTimeout(
+                () => mailController.abort(),
+                MAIL_REQUEST_TIMEOUT_MS,
+              );
+              state.mailTimeoutId = mailTimeoutId;
+              // FO-B1: Der Absende-POST muss beim Seitenwechsel ebenfalls
+              // abbrechen (Timeout und Navigation teilen sich einen Controller,
+              // damit kein AbortSignal.any vorausgesetzt wird).
+              const instanzSignal = state.controller.signal;
+              const beiNavigation = () => mailController.abort();
+              if (instanzSignal.aborted) mailController.abort();
+              else instanzSignal.addEventListener("abort", beiNavigation, { once: true });
+              const zeitAbgelaufen = () => {
+                clearTimeout(mailTimeoutId);
+                instanzSignal.removeEventListener("abort", beiNavigation);
+                if (state.mailTimeoutId === mailTimeoutId) state.mailTimeoutId = null;
+              };
+
               try {
                 const response = await fetch(mailUrl, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(payload),
+                  signal: mailController.signal,
                 });
+                zeitAbgelaufen();
                 if (!response.ok) {
                   throw new Error(`HTTP ${response.status}`);
                 }
-                confirmationpage(enclosingHtmlDivElement);
+                // FO-B1: Nach einem Seitenwechsel darf die Bestaetigungsseite
+                // nicht die inzwischen sichtbare Seite ueberschreiben.
+                if (state.disposed) return;
+                confirmationpage(enclosingHtmlDivElement, () => {
+                  app(configData, enclosingHtmlDivElement);
+                });
               } catch (err) {
+                zeitAbgelaufen();
+                if (state.disposed) return;
                 console.error("Mail senden fehlgeschlagen", err);
+                const zeitueberschreitung =
+                  err && err.name === "AbortError";
                 if (statusContainer) {
                   statusContainer.innerHTML =
-                    '<div class="alert alert-danger" role="alert">Das Formular konnte nicht übermittelt werden. Bitte versuchen Sie es später erneut. Ihre Eingaben bleiben erhalten.</div>';
+                    '<div class="alert alert-danger" role="alert">' +
+                    (zeitueberschreitung
+                      ? "Zeitüberschreitung bei der Übermittlung. Bitte versuchen Sie es erneut. Ihre Eingaben bleiben erhalten."
+                      : "Das Formular konnte nicht übermittelt werden. Bitte versuchen Sie es später erneut. Ihre Eingaben bleiben erhalten.") +
+                    "</div>";
                 }
                 if (submitButton) submitButton.disabled = false;
               }
@@ -533,7 +613,7 @@ async function app(configData, enclosingHtmlDivElement) {
   }
 }
 
-function confirmationpage(enclosingHtmlDivElement) {
+function confirmationpage(enclosingHtmlDivElement, onBackToSelection) {
   const now = new Date();
   const dateString = now.toLocaleDateString("de-DE", {
     year: "numeric",
@@ -558,10 +638,13 @@ function confirmationpage(enclosingHtmlDivElement) {
       </div>
     </div>
   `;
+  // FO-B4: Der Knopf startet die App-Ansicht neu (lokaler Schritt), statt
+  // ueber die Base-Funktion loadPage("startseite") eine Seiten-Navigation
+  // auszuloesen. Der Hash bleibt damit unveraendert.
   enclosingHtmlDivElement
     .querySelector("#fo-backToFormSelectionButton")
     .addEventListener("click", () => {
-      loadPage("startseite");
+      if (typeof onBackToSelection === "function") onBackToSelection();
     });
 }
 
@@ -633,18 +716,21 @@ async function fetchViaOdasProxy(targetUrl, options = {}) {
   return proxyData.content;
 }
 
-async function fetchOdasResource(targetUrl, configdata = {}) {
+async function fetchOdasResource(targetUrl, configdata = {}, options = {}) {
   if (isOdasProxyEnabled(configdata)) {
-    return fetchViaOdasProxy(targetUrl);
+    return fetchViaOdasProxy(targetUrl, options);
   }
 
   try {
-    const response = await fetch(targetUrl);
+    const response = await fetch(targetUrl, {
+      signal: options && options.signal ? options.signal : undefined,
+    });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
     return response.text();
   } catch (error) {
+    if (error && error.name === "AbortError") throw error;
     throw new Error(
       `Direkter Datenabruf fehlgeschlagen (${error.message}). Bitte prüfen Sie die Daten-URL und die CORS-Freigabe der Datenquelle.`,
     );
@@ -662,8 +748,8 @@ function getOdasApiUrl(configdata, name) {
   return String((treffer && treffer.url) || "").trim();
 }
 
-async function fetchOdasJson(targetUrl, configdata = {}) {
-  const rawContent = await fetchOdasResource(targetUrl, configdata);
+async function fetchOdasJson(targetUrl, configdata = {}, options = {}) {
+  const rawContent = await fetchOdasResource(targetUrl, configdata, options);
   try {
     return JSON.parse(rawContent);
   } catch (_error) {
@@ -822,19 +908,13 @@ function renderOdasFehler(container, error, kontext = {}) {
   container.innerHTML = `<div class="alert ${alertClass}" role="alert"><strong>${escapeHtml(titel)}</strong><p class="mb-1">${escapeHtml(info.hinweis)}</p>${urlZeile}<details class="small"><summary>Details</summary><code>${escapeHtml(info.detail || String(error))}</code></details></div>`;
 }
 
-function isLeerErgebnis(json) {
-  if (!json) return true;
-  if (Array.isArray(json) && json.length === 0) return true;
-  if (Array.isArray(json.records) && json.records.length === 0) return true;
-  if (Array.isArray(json.results) && json.results.length === 0) return true;
-  if (json.result && Array.isArray(json.result.records) && json.result.records.length === 0) return true;
-  return false;
-}
-
-
 async function LoadJSONData(state) {
   try {
-    const data = await fetchOdasJson(getOdasApiUrl(state.config, "formular"), state.config);
+    const data = await fetchOdasJson(
+      getOdasApiUrl(state.config, "formular"),
+      state.config,
+      { signal: state.controller.signal },
+    );
 
     // Speicherung im Instanz-State – Hier werden Feldtypen umgewandelt:
     state.loadedData = {
@@ -1028,4 +1108,6 @@ function renderWeitereInfos(configdata, uid) {
 /*
  * Diese Funktion kann Bibliotheken und benötigte Skripte laden.
  */
-function addToHead() {}
+function addToHead() {
+  return ``;
+}

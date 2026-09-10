@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.35.3 - 2026-09-10
+- **FIX (FO-B1):** Die App hatte ein `disposed`-Flag, das nirgends gesetzt oder gelesen wurde — und keinen `onPageLeave`. Folge: Ein spät antwortender `/mail`-POST ersetzte über `confirmationpage(enclosingHtmlDivElement)` den Inhalt der **gerade sichtbaren Seite** durch „Vielen Dank!". Jetzt gibt es eine Instanz-Registry, einen `AbortController` und `disposed`-Prüfungen vor jedem DOM-Schreiber; das Metadaten-Laden bricht ebenfalls ab.
+- **FIX (FO-B2):** Der Absende-POST hatte weder Timeout noch Abbruch — bei nicht antwortendem Backend blieb der Button dauerhaft gesperrt. Jetzt 30-s-Timeout mit eigener Meldung; Timeout und Navigation teilen sich einen Controller (kein `AbortSignal.any` nötig).
+- **FIX (FO-B3):** `document.body.classList.remove("register-page")` entfernt — die Klasse wird im ganzen Portfolio nirgends gesetzt und steht nur in `app-base.css`; der Aufruf war ein No-op auf fremdem globalen Zustand.
+- **FIX (FO-B4):** „Zurück zur Formularauswahl" ruft nicht mehr die Base-Funktion `loadPage("startseite")` auf (Seiten-Navigation ohne Hash-Update), sondern startet die App-Ansicht im selben Container neu.
+- **TECH (FO-B5):** `isLeerErgebnis` entfernt; `fetchOdasResource`/`fetchOdasJson` reichen `signal` durch und werfen `AbortError` unverpackt; `addToHead` gibt `""` zurück; bei `?form=` wird `loadDynamicForm` nur noch einmal aufgerufen (vorher doppelt bei genau einem Formular).
+
 ## 1.35.2 - 2026-09-08
 - **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ckan-dl) vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.35.1 -> 1.35.2).
 

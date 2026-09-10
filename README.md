@@ -13,6 +13,7 @@ Die App ist eine "ODAP App V1".
 - Bestätigungsformular mit E-Mail-Kopie
 - Zusammenfassung der Eingaben vor dem Absenden
 - Validierung von Pflichtfeldern
+- Absenden über den ODAS-Dienst `/mail` (optional mit E-Mail-Kopie); laufende Übermittlungen brechen beim Seitenwechsel ab, Zeitüberschreitungen werden gemeldet
 
 ## Für wen ist diese App?
 
