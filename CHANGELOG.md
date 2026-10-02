@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.35.4 - 2026-10-02
+- ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
+
 ## 1.35.3 - 2026-09-10
 - **FIX (FO-B1):** Die App hatte ein `disposed`-Flag, das nirgends gesetzt oder gelesen wurde — und keinen `onPageLeave`. Folge: Ein spät antwortender `/mail`-POST ersetzte über `confirmationpage(enclosingHtmlDivElement)` den Inhalt der **gerade sichtbaren Seite** durch „Vielen Dank!". Jetzt gibt es eine Instanz-Registry, einen `AbortController` und `disposed`-Prüfungen vor jedem DOM-Schreiber; das Metadaten-Laden bricht ebenfalls ab.
 - **FIX (FO-B2):** Der Absende-POST hatte weder Timeout noch Abbruch — bei nicht antwortendem Backend blieb der Button dauerhaft gesperrt. Jetzt 30-s-Timeout mit eigener Meldung; Timeout und Navigation teilen sich einen Controller (kein `AbortSignal.any` nötig).
