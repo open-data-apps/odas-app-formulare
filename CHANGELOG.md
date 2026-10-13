@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.35.6 - 2026-10-13
+- FIX: Standard-Fehleranzeige gibt präzisere Tipps: ein „Failed to fetch“ ohne Proxy-Kontext erhält einen Netzwerk-Hinweis statt `proxyAktiv`; der 404-Hinweis gilt nur noch für echte HTTP-404-Antworten und nennt den lokal fehlenden Proxy/Relay statt pauschal „Datensatz auf dem Portal nicht gefunden“.
+
 ## 1.35.5 - 2026-10-08
 - FIX: F-122: Ungültige E-Mail-Adressen im regulären Feld verhindern Seitenwechsel/Absenden; Pflicht- und optionale E-Mail-Felder erhalten einen passenden, aktualisierten Inline-Fehler.
 - FIX: F-123: Formularauswahl auch beim Einzel-/Direktstart aufbauen, damit Abbrechen einen nutzbaren Neustart erlaubt.
