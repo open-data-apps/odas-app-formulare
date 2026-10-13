@@ -143,30 +143,26 @@ async function app(configData, enclosingHtmlDivElement) {
     ? state.loadedData.forms.find((form) => form.id === formParam)
     : null;
 
-  if (state.loadedData.forms.length === 1) {
-    loadDynamicForm(state.loadedData.forms[0]);
-  } else {
-    const formList = document.createElement("ul");
-    formList.className = "list-group";
+  // F-123: Auch beim automatischen Einzelstart bleibt ein Wiedereinstieg vorhanden.
+  const formList = document.createElement("ul");
+  formList.className = "list-group";
 
-    state.loadedData.forms.forEach((form) => {
-      const listItem = document.createElement("li");
-      listItem.className = "list-group-item list-group-item-action";
-      listItem.innerHTML = `
+  state.loadedData.forms.forEach((form) => {
+    const listItem = document.createElement("li");
+    listItem.className = "list-group-item list-group-item-action";
+    listItem.innerHTML = `
     <div class="form-item">
       <h5 class="form-label text-center">${escapeHtml(form.label)}</h5>
       <p class="form-description text-center">${escapeHtml(form.description)}</p>
     </div>`;
 
-      listItem.addEventListener("click", () => loadDynamicForm(form));
-      formList.appendChild(listItem);
-    });
+    listItem.addEventListener("click", () => loadDynamicForm(form));
+    formList.appendChild(listItem);
+  });
 
-    formListContainer.appendChild(formList);
-
-    if (selectedForm) {
-      loadDynamicForm(selectedForm);
-    }
+  formListContainer.appendChild(formList);
+  if (selectedForm || state.loadedData.forms.length === 1) {
+    loadDynamicForm(selectedForm || state.loadedData.forms[0]);
   }
 
   function loadDynamicForm(form) {
@@ -420,16 +416,20 @@ async function app(configData, enclosingHtmlDivElement) {
         fieldElement &&
         rohwert !== "" &&
         !/^[0-9]+$/.test(rohwert);
-      if (fehltPflicht || falscheZahl) {
+      // F-122: Der Klick-Handler umgeht die native Formularvalidierung.
+      const falscheEmail = field.type === "email" && fieldElement && rohwert !== "" && fieldElement.validity.typeMismatch;
+      if (fehltPflicht || falscheZahl || falscheEmail) {
         fieldElement.classList.add("is-invalid");
+        const message = falscheZahl ? "Bitte geben Sie nur Ziffern ein."
+          : falscheEmail ? "Bitte geben Sie eine gültige E-Mail-Adresse ein." : "Dieses Feld ist erforderlich.";
         if (!errorElement) {
           const errorMsg = document.createElement("div");
           errorMsg.id = field.id + "-error";
           errorMsg.className = "invalid-feedback";
-          errorMsg.textContent = falscheZahl
-            ? "Bitte geben Sie nur Ziffern ein."
-            : "Dieses Feld ist erforderlich.";
+          errorMsg.textContent = message;
           fieldElement.parentNode.appendChild(errorMsg);
+        } else {
+          errorElement.textContent = message;
         }
         valid = false;
       } else if (fieldElement) {

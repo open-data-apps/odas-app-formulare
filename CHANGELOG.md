@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.35.5 - 2026-10-08
+- FIX: F-122: Ungültige E-Mail-Adressen im regulären Feld verhindern Seitenwechsel/Absenden; Pflicht- und optionale E-Mail-Felder erhalten einen passenden, aktualisierten Inline-Fehler.
+- FIX: F-123: Formularauswahl auch beim Einzel-/Direktstart aufbauen, damit Abbrechen einen nutzbaren Neustart erlaubt.
+
 ## 1.35.4 - 2026-10-02
 - ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
 
