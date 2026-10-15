@@ -28,11 +28,12 @@ Diese App ermöglicht das digitale Ausfüllen und Einreichen von Formularen. Sie
 ![Alt-Text](/assets/Desktop_Screenshot.png)
 ![Alt-Text](/assets/Desktop_Screenshot_2.png)
 ![Alt-Text](/assets/Desktop_Screenshot_3.png)
-![Alt-Text](/assets/Desktop_Screenshot_4.png)
 
 #### Mobile Version
 
 ![Alt-Text](/assets/Mobile_Screenshot.png)
+![Alt-Text](/assets/Mobile_Screenshot_2.png)
+![Alt-Text](/assets/Mobile_Screenshot_3.png)
 
 ### Lokale Entwicklung mit VS Code Live Server
 
