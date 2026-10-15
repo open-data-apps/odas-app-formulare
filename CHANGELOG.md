@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.35.8 - 2026-10-15
+- FIX: Mobil (bis 575 px): Lange Zustimmungstexte brechen neben ihrer Checkbox um, statt über den Bildschirmrand zu laufen.
+
 ## 1.35.7 - 2026-10-15
 - DOCS: Neue Store-Screenshots: je drei Desktop- (1440 × 1000) und Mobile-Aufnahmen (390 × 844) der aktuellen App, aufgenommen auf der Dev-Instanz. Bisherige Bilder nach `docs/screenshots/archive/2026-10-13/` verschoben, Bildverweise im README angepasst. Keine Änderung an App-Code oder Konfiguration.
 

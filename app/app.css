@@ -215,3 +215,10 @@ button:disabled {
 .fo-weitere-infos-content a {
   overflow-wrap: anywhere;
 }
+/* Mobile: let the consent text shrink and wrap beside its checkbox. */
+@media (max-width: 575.98px) {
+  #main-content #fo-dynamicFormContainer .form-check-label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
